@@ -1,1018 +1,834 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Simulacro ICFES 11° | Matemáticas + Lectura Crítica</title>
-  <style>
-    :root {
-      --blue:   #1a3a6b;
-      --orange: #e8640c;
-      --green:  #27ae60;
-      --red:    #e74c3c;
-      --yellow: #f39c12;
-      --purple: #8e44ad;
-      --teal:   #16a085;
-      --bg:     #f0f2f5;
-      --white:  #ffffff;
-      --border: #d0d7e3;
-      --text:   #2c3e50;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); color: var(--text); }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulacro ICFES — Evaluar para Avanzar 11°</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#f0f4f8;color:#1a1a2e;min-height:100vh;}
 
-    /* ── SCREENS ── */
-    .screen { display: none; }
-    #landing.active    { display: flex; flex-direction: column; min-height: 100vh; align-items: center; justify-content: center; }
-    #exam.active       { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
-    #transition.active { display: flex; flex-direction: column; min-height: 100vh; align-items: center; justify-content: center; }
-    #results.active    { display: flex; flex-direction: column; min-height: 100vh; }
+/* ── Screens ── */
+.screen{display:none;min-height:100vh;}
+.screen.active{display:flex;flex-direction:column;}
 
-    /* ── LANDING ── */
-    #landing {
-      background: linear-gradient(145deg, #0e2a52 0%, #1a6191 60%, #0e7d8a 100%);
-      color: var(--white); text-align: center; padding: 40px 24px;
-    }
-    .brand { font-size: 3rem; margin-bottom: 8px; }
-    #landing h1 { font-size: 2.2rem; font-weight: 800; letter-spacing: -.5px; }
-    #landing h2 { font-size: 1.05rem; font-weight: 400; opacity: .85; margin: 8px 0 24px; }
+/* ── LANDING ── */
+#landing{background:linear-gradient(135deg,#1a237e 0%,#283593 55%,#0d47a1 100%);
+  justify-content:center;align-items:center;padding:20px;}
+.landing-card{background:#fff;border-radius:24px;padding:36px 40px;max-width:600px;
+  width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3);}
+.icfes-badge{display:inline-block;background:#1a237e;color:#fff;padding:4px 14px;
+  border-radius:20px;font-size:.72rem;font-weight:700;letter-spacing:1.5px;margin-bottom:10px;}
+.landing-card h1{font-size:2rem;color:#1a237e;font-weight:900;margin-bottom:4px;}
+.landing-card .sub{color:#666;font-size:.95rem;margin-bottom:20px;}
+.info-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;}
+.info-chip{background:#e8eaf6;color:#1a237e;padding:5px 14px;border-radius:20px;
+  font-size:.8rem;font-weight:600;}
+.areas-preview h3{font-size:.78rem;font-weight:700;color:#999;text-transform:uppercase;
+  letter-spacing:1px;margin-bottom:10px;}
+.area-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;}
+.area-chip{padding:7px 16px;border-radius:20px;font-size:.83rem;font-weight:700;color:#fff;}
+.area-chip.mat{background:#1565c0;} .area-chip.lc{background:#6a1b9a;}
+.area-chip.cn{background:#2e7d32;} .area-chip.soc{background:#bf360c;}
+.area-chip.en{background:#00695c;}
+.name-form label{display:block;font-weight:700;color:#333;margin-bottom:8px;}
+.name-form input{width:100%;padding:13px 16px;border:2px solid #e0e0e0;border-radius:12px;
+  font-size:1rem;outline:none;transition:border-color .2s;}
+.name-form input:focus{border-color:#1a237e;}
+.btn-start{width:100%;margin-top:14px;padding:15px;
+  background:linear-gradient(135deg,#1a237e,#283593);color:#fff;border:none;
+  border-radius:12px;font-size:1.05rem;font-weight:700;cursor:pointer;
+  transition:transform .1s,box-shadow .1s;}
+.btn-start:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(26,35,126,.4);}
+.btn-start:active{transform:translateY(0);}
 
-    .areas-row { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin: 0 0 20px; }
-    .area-pill {
-      background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.3);
-      border-radius: 12px; padding: 12px 22px; font-size: .9rem; text-align: center; min-width: 160px;
-    }
-    .area-pill .area-icon { font-size: 1.8rem; margin-bottom: 4px; }
-    .area-pill strong { display: block; font-size: 1rem; margin-bottom: 2px; }
+/* ── EXAM ── */
+#exam{background:#f0f4f8;}
+.exam-header{display:flex;align-items:center;gap:12px;padding:10px 16px;background:#fff;
+  box-shadow:0 2px 8px rgba(0,0,0,.1);flex-shrink:0;flex-wrap:wrap;}
+.section-badge{display:flex;align-items:center;gap:7px;padding:6px 14px;border-radius:20px;
+  color:#fff;font-weight:700;font-size:.88rem;white-space:nowrap;}
+.progress-info{flex:1;text-align:center;font-size:.84rem;color:#666;}
+.timer-disp{font-size:1.35rem;font-weight:800;padding:7px 18px;background:#e8f5e9;
+  color:#2e7d32;border-radius:12px;font-variant-numeric:tabular-nums;
+  transition:background .3s,color .3s;}
+.timer-disp.warn{background:#fff3e0;color:#e65100;}
+.timer-disp.danger{background:#ffebee;color:#c62828;animation:blink 1s step-end infinite;}
+@keyframes blink{50%{opacity:.35;}}
 
-    .info-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin: 0 0 24px; }
-    .info-pill {
-      background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.3);
-      border-radius: 50px; padding: 10px 20px; font-size: .9rem;
-    }
-    .info-pill strong { font-size: 1.3rem; display: block; }
+.exam-body{display:flex;flex:1;overflow:hidden;}
+.pdf-panel{flex:1;background:#525659;}
+.pdf-panel iframe{width:100%;height:100%;border:none;display:block;}
+.answer-panel{width:230px;flex-shrink:0;background:#fff;border-left:1px solid #e8e8e8;
+  display:flex;flex-direction:column;padding:12px;gap:10px;overflow-y:auto;}
 
-    .instructions-box {
-      background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.25);
-      border-radius: 14px; padding: 18px 26px; max-width: 520px;
-      text-align: left; margin: 0 auto 28px;
-    }
-    .instructions-box h3 { font-size: 1rem; margin-bottom: 10px; opacity: .9; }
-    .instructions-box li { list-style: none; padding: 5px 0 5px 22px; position: relative; font-size: .88rem; opacity: .9; }
-    .instructions-box li::before { content: '→'; position: absolute; left: 0; color: #7dd3fc; font-weight: bold; }
+.nav-label{font-size:.72rem;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:1px;}
+.nav-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;}
+.nav-btn{aspect-ratio:1;border:2px solid #e0e0e0;border-radius:7px;background:#fff;
+  font-size:.73rem;font-weight:700;cursor:pointer;transition:all .12s;color:#777;}
+.nav-btn.answered{background:#e8f5e9;border-color:#43a047;color:#2e7d32;}
+.nav-btn.current{border-color:#1a237e;background:#e8eaf6;color:#1a237e;}
 
-    .btn-start {
-      background: var(--orange); color: white; border: none;
-      padding: 18px 52px; font-size: 1.15rem; font-weight: 700;
-      border-radius: 50px; cursor: pointer; transition: all .25s;
-      letter-spacing: .4px; box-shadow: 0 6px 24px rgba(0,0,0,.3);
-    }
-    .btn-start:hover { background: #bf530a; transform: translateY(-2px); }
+.q-label{font-size:.78rem;color:#888;}
+.q-num-big{font-size:1.1rem;font-weight:800;color:#1a237e;}
+.opt-grid{display:flex;flex-direction:column;gap:5px;}
+.opt-btn{padding:9px 12px;border:2px solid #e0e0e0;border-radius:9px;background:#fff;
+  font-size:.9rem;font-weight:700;cursor:pointer;text-align:center;transition:all .12s;color:#333;}
+.opt-btn:hover{border-color:#1a237e;background:#e8eaf6;}
+.opt-btn.selected{background:#1a237e;border-color:#1a237e;color:#fff;}
 
-    /* ── EXAM BAR ── */
-    .exam-bar {
-      background: var(--blue); color: white; padding: 10px 18px;
-      display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-shrink: 0;
-    }
-    .bar-title { font-weight: 700; font-size: 1rem; }
-    .bar-title span { opacity: .7; font-weight: 400; font-size: .82rem; display: block; }
+.btn-finish-section{margin-top:auto;padding:11px;
+  background:linear-gradient(135deg,#b71c1c,#e53935);color:#fff;border:none;
+  border-radius:10px;font-weight:700;cursor:pointer;font-size:.88rem;}
+.btn-finish-section:hover{opacity:.9;}
 
-    .section-badge {
-      background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.3);
-      border-radius: 20px; padding: 4px 12px; font-size: .78rem; font-weight: 700;
-      letter-spacing: .3px;
-    }
+/* ── TRANSITION ── */
+#transition{background:linear-gradient(135deg,#f0f4f8,#e8eaf6);
+  justify-content:center;align-items:center;padding:20px;}
+.tr-card{background:#fff;border-radius:24px;padding:36px;max-width:520px;width:100%;
+  box-shadow:0 16px 48px rgba(0,0,0,.13);text-align:center;}
+.tr-icon{font-size:2.8rem;margin-bottom:12px;}
+.tr-title{font-size:1.55rem;font-weight:900;color:#1a237e;margin-bottom:6px;}
+.tr-sub{color:#777;font-size:.9rem;margin-bottom:20px;}
 
-    #timer {
-      font-family: 'Courier New', monospace; font-size: 1.6rem; font-weight: 700;
-      letter-spacing: 3px; background: rgba(255,255,255,.15);
-      padding: 6px 18px; border-radius: 30px; transition: background .5s;
-    }
-    #timer.warn   { background: rgba(243,156,18,.45); }
-    #timer.danger { background: rgba(231,76,60,.55); animation: blink .9s infinite; }
-    @keyframes blink { 50% { opacity: .6; } }
+.ring-sm{width:110px;height:110px;margin:0 auto 20px;position:relative;}
+.ring-sm svg{width:100%;height:100%;}
+.ring-sm .ring-text{position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;}
+.ring-sm .ring-num{font-size:1.9rem;font-weight:900;color:#1a237e;}
+.ring-sm .ring-max{font-size:.72rem;color:#aaa;}
 
-    .bar-progress { font-size: .9rem; opacity: .85; text-align: right; }
-    .bar-progress strong { font-size: 1.1rem; }
+.topic-cards{display:flex;flex-direction:column;gap:9px;margin:16px 0;text-align:left;}
+.tc{background:#f8f9fa;border-radius:11px;padding:11px 14px;border-left:4px solid #e0e0e0;}
+.tc.good{border-left-color:#43a047;} .tc.bad{border-left-color:#e53935;}
+.tc-name{font-weight:700;font-size:.88rem;color:#333;}
+.tc-stats{font-size:.78rem;color:#777;margin:2px 0;}
+.tc-tip{font-size:.77rem;color:#999;font-style:italic;margin-top:4px;}
 
-    #progress-bar-wrap { height: 4px; background: rgba(255,255,255,.2); flex-shrink: 0; }
-    #progress-bar-fill { height: 100%; background: var(--orange); width: 0%; transition: width .3s; }
+.btn-next{width:100%;padding:14px;background:linear-gradient(135deg,#1a237e,#283593);
+  color:#fff;border:none;border-radius:12px;font-size:1rem;font-weight:700;cursor:pointer;
+  margin-top:8px;}
+.btn-next:hover{opacity:.9;}
 
-    /* ── EXAM BODY ── */
-    .exam-body { display: flex; flex: 1; overflow: hidden; }
+/* ── RESULTS ── */
+#results{background:linear-gradient(135deg,#f0f4f8,#e8eaf6);overflow-y:auto;}
+.results-wrap{max-width:880px;margin:0 auto;padding:24px 16px 48px;}
+.res-header{text-align:center;margin-bottom:32px;}
+.res-header .big-icon{font-size:3rem;margin-bottom:8px;}
+.res-header h2{font-size:2rem;font-weight:900;color:#1a237e;}
+.res-header .res-student{font-size:1.1rem;color:#444;margin-top:6px;}
+.res-header .res-date{font-size:.84rem;color:#999;margin-top:3px;}
 
-    .pdf-side { flex: 1; display: flex; flex-direction: column; background: #525659; min-width: 0; }
-    .pdf-toolbar {
-      background: #3c3f41; color: #ccc; padding: 8px 14px;
-      font-size: .82rem; display: flex; align-items: center; gap: 10px; flex-shrink: 0;
-    }
-    .pdf-toolbar a { color: #7dd3fc; text-decoration: none; }
-    .pdf-toolbar a:hover { text-decoration: underline; }
-    .pdf-side iframe { flex: 1; border: none; }
+.scores-row{display:flex;flex-wrap:wrap;justify-content:center;gap:16px;margin-bottom:28px;}
+.score-card{background:#fff;border-radius:18px;padding:18px 14px;text-align:center;
+  width:130px;box-shadow:0 4px 14px rgba(0,0,0,.07);}
+.score-card-icon{font-size:1.7rem;margin-bottom:6px;}
+.score-card-label{font-size:.7rem;font-weight:700;color:#aaa;text-transform:uppercase;
+  letter-spacing:.5px;margin-bottom:8px;line-height:1.3;}
+.ring-xs{width:72px;height:72px;margin:0 auto;position:relative;}
+.ring-xs svg{width:100%;height:100%;}
+.ring-xs .rx-num{position:absolute;inset:0;display:flex;align-items:center;
+  justify-content:center;font-size:1.1rem;font-weight:800;color:#1a237e;}
 
-    /* ── ANSWER SIDE ── */
-    .ans-side {
-      width: 290px; background: var(--white);
-      border-left: 3px solid var(--blue);
-      display: flex; flex-direction: column; flex-shrink: 0;
-    }
-    .ans-header {
-      background: var(--blue); color: white;
-      padding: 12px 14px; font-weight: 700; font-size: 1rem;
-      text-align: center; flex-shrink: 0;
-    }
-    .nav-grid {
-      display: grid; grid-template-columns: repeat(5, 1fr);
-      gap: 4px; padding: 10px; border-bottom: 2px solid var(--border); flex-shrink: 0;
-    }
-    .nav-btn {
-      border: 2px solid var(--border); background: white; border-radius: 6px;
-      padding: 5px 0; font-size: .8rem; font-weight: 700;
-      cursor: pointer; color: #888; transition: all .15s; text-align: center;
-    }
-    .nav-btn:hover { border-color: var(--blue); color: var(--blue); }
-    .nav-btn.done  { background: var(--blue); border-color: var(--blue); color: white; }
+.total-card{background:linear-gradient(135deg,#1a237e,#283593);color:#fff;
+  border-radius:20px;padding:28px;text-align:center;margin-bottom:28px;
+  box-shadow:0 8px 30px rgba(26,35,126,.3);}
+.total-label{font-size:.82rem;font-weight:600;opacity:.75;text-transform:uppercase;
+  letter-spacing:1px;margin-bottom:8px;}
+.total-num{font-size:4.5rem;font-weight:900;line-height:1;}
+.total-of{font-size:1.1rem;opacity:.65;}
+.total-level{font-size:.95rem;margin-top:8px;opacity:.88;}
 
-    .ans-list { flex: 1; overflow-y: auto; padding: 8px; }
+.all-feedback{display:flex;flex-direction:column;gap:18px;margin-bottom:28px;}
+.sf-card{background:#fff;border-radius:16px;padding:18px;
+  box-shadow:0 2px 10px rgba(0,0,0,.06);}
+.sf-head{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.sf-icon{font-size:1.4rem;} .sf-title{font-size:1rem;font-weight:800;color:#1a237e;}
+.sf-score{margin-left:auto;font-size:1.25rem;font-weight:800;}
 
-    .q-row {
-      border: 2px solid var(--border); border-radius: 8px;
-      margin-bottom: 6px; overflow: hidden; transition: border-color .2s, background .2s;
-    }
-    .q-row.done { border-color: var(--blue); background: #eef2fc; }
-    .q-label {
-      background: #e8edf5; padding: 5px 10px;
-      font-size: .8rem; font-weight: 700; color: var(--blue);
-      display: flex; justify-content: space-between;
-    }
-    .q-row.done .q-label { background: var(--blue); color: white; }
-    .opts { display: flex; gap: 4px; padding: 6px; }
-    .opt {
-      flex: 1; border: 2px solid #d5dce8; background: white; border-radius: 6px;
-      cursor: pointer; padding: 7px 0; font-size: .9rem; font-weight: 700;
-      color: #555; text-align: center; transition: all .15s;
-    }
-    .opt:hover { border-color: var(--blue); color: var(--blue); background: #e8f0fe; }
-    .opt.sel   { background: var(--blue); border-color: var(--blue); color: white; }
+.cert-btn{display:block;width:100%;max-width:400px;margin:0 auto;padding:17px;
+  background:linear-gradient(135deg,#c62828,#e53935);color:#fff;border:none;
+  border-radius:14px;font-size:1.05rem;font-weight:700;cursor:pointer;
+  box-shadow:0 6px 20px rgba(198,40,40,.35);}
+.cert-btn:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(198,40,40,.45);}
 
-    .ans-footer { padding: 12px; border-top: 2px solid var(--border); flex-shrink: 0; }
-    .answered-label { text-align: center; font-size: .85rem; color: #666; margin-bottom: 8px; }
-    .btn-finish {
-      width: 100%; padding: 13px; background: var(--orange); color: white;
-      border: none; border-radius: 8px; font-size: 1.05rem; font-weight: 700;
-      cursor: pointer; transition: background .2s;
-    }
-    .btn-finish:hover { background: #bf530a; }
+/* ── PRINT CERTIFICATE ── */
+#certificate{display:none;}
 
-    /* ── TRANSITION ── */
-    #transition {
-      background: linear-gradient(145deg, #0e2a52 0%, #1a6191 60%, #0e7d8a 100%);
-      color: var(--white); text-align: center; padding: 40px 24px;
-    }
-    .trans-icon { font-size: 4rem; margin-bottom: 16px; }
-    #transition h1 { font-size: 1.9rem; font-weight: 800; margin-bottom: 8px; }
-    #transition h2 { font-size: 1rem; opacity: .8; margin-bottom: 28px; }
-    .trans-score-box {
-      background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.3);
-      border-radius: 16px; padding: 20px 32px; margin: 0 auto 28px; display: inline-block;
-    }
-    .trans-score-box .ts-label { font-size: .9rem; opacity: .8; margin-bottom: 6px; }
-    .trans-score-box .ts-num { font-size: 3.5rem; font-weight: 800; line-height: 1; }
-    .trans-score-box .ts-denom { font-size: 1rem; opacity: .7; }
-    .next-section-box {
-      background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.25);
-      border-radius: 14px; padding: 18px 26px; max-width: 460px;
-      text-align: left; margin: 0 auto 28px;
-    }
-    .next-section-box h3 { font-size: 1rem; margin-bottom: 10px; }
-    .next-section-box li { list-style: none; padding: 4px 0 4px 20px; position: relative; font-size: .88rem; opacity: .9; }
-    .next-section-box li::before { content: '→'; position: absolute; left: 0; color: #7dd3fc; font-weight: bold; }
+@media print{
+  body>*:not(#certificate){display:none!important;}
+  #certificate{display:block!important;}
 
-    /* ── RESULTS ── */
-    #results { background: var(--bg); }
-    .res-header {
-      background: linear-gradient(135deg, var(--blue) 0%, #1a6191 100%);
-      color: white; padding: 32px 24px; text-align: center;
-    }
-    .res-header h1 { font-size: 1.7rem; }
-    .res-header h2 { font-size: .9rem; opacity: .8; margin-top: 4px; font-weight: 400; }
+  @page{size:A4;margin:0;}
+  .cert-page{width:210mm;min-height:297mm;padding:14mm;background:#fff;
+    font-family:'Georgia',serif;position:relative;}
+  .cert-border-outer{border:7px double #1a237e;height:calc(297mm - 28mm);
+    position:relative;overflow:hidden;}
+  .cert-border-inner{border:2px solid #9fa8da;margin:5mm;padding:9mm 12mm;
+    height:calc(100% - 10mm);}
+  .cert-wm{position:absolute;top:50%;left:50%;
+    transform:translate(-50%,-50%) rotate(-25deg);
+    font-size:90pt;color:rgba(26,35,126,.04);font-weight:900;
+    pointer-events:none;white-space:nowrap;z-index:0;}
+  .cert-content{position:relative;z-index:1;}
+  .cert-header{text-align:center;margin-bottom:7mm;}
+  .cert-logo-text{font-size:8.5pt;color:#777;letter-spacing:2px;
+    text-transform:uppercase;margin-bottom:3mm;}
+  .cert-title{font-size:25pt;color:#1a237e;font-weight:900;text-transform:uppercase;
+    letter-spacing:3px;line-height:1.2;}
+  .cert-hr{border:none;border-top:2px solid #1a237e;margin:5mm 0;}
+  .cert-hr2{border:none;border-top:1px solid #c5cae9;margin:3mm 0;}
+  .cert-certifies{font-size:10pt;color:#555;text-align:center;}
+  .cert-name-box{text-align:center;margin:4mm 0;}
+  .cert-name{font-size:23pt;color:#1a237e;font-weight:700;
+    border-bottom:2px solid #1a237e;display:inline-block;
+    padding-bottom:2mm;min-width:110mm;}
+  .cert-text{font-size:10pt;color:#444;text-align:center;line-height:1.7;margin:4mm 0;}
+  .cert-scores-title{font-size:11pt;font-weight:700;color:#1a237e;
+    margin:5mm 0 3mm;text-align:center;}
+  .cert-table{width:100%;border-collapse:collapse;font-size:9.5pt;}
+  .cert-table th{background:#1a237e;color:#fff;padding:2.5mm 4mm;
+    text-align:left;font-size:9pt;}
+  .cert-table td{padding:2mm 4mm;border-bottom:1px solid #e8eaf6;vertical-align:middle;}
+  .cert-table tr.total-row td{background:#e8eaf6;font-weight:700;
+    font-size:11pt;color:#1a237e;}
+  .cert-footer{margin-top:7mm;display:flex;justify-content:space-around;align-items:flex-end;}
+  .cert-sig{text-align:center;}
+  .cert-sig-line{display:block;width:55mm;border-top:1px solid #333;margin:0 auto 2mm;}
+  .cert-sig-role{font-size:8.5pt;color:#666;}
+  .cert-bottom{text-align:center;margin-top:5mm;font-size:7.5pt;color:#aaa;}
+  .cert-date-line{text-align:center;margin-top:3mm;font-size:9pt;color:#666;}
+}
 
-    .scores-row {
-      display: flex; align-items: center; justify-content: center;
-      margin: 24px 0 8px; gap: 18px; flex-wrap: wrap;
-    }
-    .score-ring {
-      width: 130px; height: 130px; border-radius: 50%;
-      background: rgba(255,255,255,.1); border: 5px solid white;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      transition: border-color .5s, color .5s;
-    }
-    .score-ring.big {
-      width: 160px; height: 160px; border-width: 6px;
-    }
-    .score-ring .num   { font-size: 2.6rem; font-weight: 800; line-height: 1; }
-    .score-ring.big .num { font-size: 3.2rem; }
-    .score-ring .denom { font-size: .78rem; opacity: .7; }
-    .score-ring .area-lbl { font-size: .75rem; opacity: .8; margin-top: 3px; text-align: center; }
-    .scores-plus { font-size: 2rem; font-weight: 800; opacity: .5; }
-    .score-msg { font-size: 1rem; max-width: 260px; line-height: 1.6; opacity: .9; }
-
-    .res-body { max-width: 980px; margin: 0 auto; padding: 26px 20px 50px; }
-
-    .stats-row {
-      display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 26px;
-    }
-    .stat-box {
-      background: white; border-radius: 12px; padding: 16px 22px;
-      text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,.07); min-width: 100px;
-    }
-    .stat-box .n { font-size: 1.9rem; font-weight: 800; }
-    .stat-box .lbl { font-size: .78rem; color: #777; margin-top: 3px; }
-    .n.g { color: var(--green); } .n.r { color: var(--red); } .n.y { color: var(--yellow); }
-    .n.b { color: var(--blue); }
-
-    /* ── SECTION HEADING ── */
-    .sec-heading {
-      display: flex; align-items: center; gap: 12px;
-      background: var(--blue); color: white;
-      padding: 10px 16px; border-radius: 10px; margin-bottom: 14px;
-    }
-    .sec-heading .sh-icon { font-size: 1.3rem; }
-    .sec-heading .sh-title { font-weight: 700; font-size: 1rem; }
-    .sec-heading .sh-sub { font-size: .8rem; opacity: .75; }
-
-    /* ── TOPIC FEEDBACK ── */
-    .section-title {
-      font-size: 1.05rem; font-weight: 700; margin-bottom: 12px; color: var(--blue);
-      display: flex; align-items: center; gap: 8px;
-    }
-    .section-title::after { content: ''; flex: 1; height: 2px; background: var(--border); }
-
-    .topics-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 12px; margin-bottom: 28px;
-    }
-    .topic-card {
-      background: white; border-radius: 12px; padding: 16px 18px;
-      box-shadow: 0 2px 10px rgba(0,0,0,.07); border-top: 4px solid;
-    }
-    .topic-card.great  { border-color: var(--green); }
-    .topic-card.good   { border-color: var(--yellow); }
-    .topic-card.needs  { border-color: var(--red); }
-    .topic-card.none   { border-color: #ccc; }
-
-    .topic-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-    .topic-name { font-weight: 700; font-size: .92rem; }
-    .topic-badge {
-      font-size: .75rem; font-weight: 700; padding: 3px 10px;
-      border-radius: 20px; color: white;
-    }
-    .badge-great { background: var(--green); }
-    .badge-good  { background: var(--yellow); }
-    .badge-needs { background: var(--red); }
-    .badge-none  { background: #aaa; }
-
-    .topic-bar-wrap { background: #e8edf5; border-radius: 20px; height: 8px; margin-bottom: 8px; }
-    .topic-bar-fill { height: 100%; border-radius: 20px; transition: width .6s; }
-    .fill-great { background: var(--green); }
-    .fill-good  { background: var(--yellow); }
-    .fill-needs { background: var(--red); }
-    .fill-none  { background: #ccc; }
-
-    .topic-detail { font-size: .8rem; color: #555; line-height: 1.5; }
-    .topic-qs { margin-bottom: 6px; }
-    .topic-tip { font-style: italic; color: #777; }
-    .topic-pcts { display: flex; justify-content: space-between; font-size: .78rem; color: #777; margin-bottom: 4px; }
-
-    /* ── DETAIL GRID ── */
-    .detail-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
-      gap: 10px; margin-bottom: 30px;
-    }
-    .det-card {
-      background: white; border-radius: 10px; padding: 13px 15px;
-      box-shadow: 0 2px 8px rgba(0,0,0,.06); border-left: 5px solid;
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .det-card.ok   { border-color: var(--green); }
-    .det-card.err  { border-color: var(--red); }
-    .det-card.skip { border-color: #bbb; }
-    .det-q   { font-weight: 700; font-size: .92rem; }
-    .det-sub { font-size: .75rem; color: #888; margin-top: 1px; }
-    .det-ans { font-size: .82rem; margin-top: 4px; }
-    .det-icon { font-size: 1.3rem; margin-left: 10px; flex-shrink: 0; }
-    .c-ans { color: var(--green); font-weight: 700; }
-    .w-ans { color: var(--red); }
-
-    .area-divider { border: none; border-top: 2px solid var(--border); margin: 20px 0 28px; }
-
-    .btn-retry {
-      display: block; margin: 8px auto 0; padding: 14px 42px;
-      background: var(--blue); color: white; border: none; border-radius: 50px;
-      font-size: 1.05rem; font-weight: 700; cursor: pointer; transition: all .2s;
-    }
-    .btn-retry:hover { background: #0f2547; transform: translateY(-1px); }
-
-    /* ── MOBILE ── */
-    @media (max-width: 640px) {
-      .exam-body { flex-direction: column; }
-      .pdf-side  { min-height: 50vh; }
-      .ans-side  { width: 100%; border-left: none; border-top: 3px solid var(--blue); }
-      #timer     { font-size: 1.2rem; padding: 5px 12px; }
-      .bar-title span { display: none; }
-      .scores-plus { display: none; }
-    }
-  </style>
+/* ── Misc ── */
+::-webkit-scrollbar{width:6px;}
+::-webkit-scrollbar-track{background:#f1f1f1;}
+::-webkit-scrollbar-thumb{background:#ccc;border-radius:3px;}
+@media(max-width:600px){
+  .exam-body{flex-direction:column;}
+  .answer-panel{width:100%;height:200px;border-left:none;border-top:1px solid #eee;}
+  .pdf-panel{min-height:320px;}
+}
+</style>
 </head>
 <body>
 
-<!-- ════════════════ LANDING ════════════════ -->
-<section id="landing" class="screen active">
-  <div class="brand">🎓</div>
-  <h1>Simulacro ICFES 11°</h1>
-  <h2>Evaluar para Avanzar &nbsp;·&nbsp; Dos secciones · Puntaje combinado</h2>
+<!-- ══════════════════════════════════════
+     LANDING — Ingreso de nombre
+══════════════════════════════════════ -->
+<div id="landing" class="screen active">
+  <div style="background:linear-gradient(135deg,#1a237e 0%,#283593 55%,#0d47a1 100%);
+              min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px;">
+    <div class="landing-card">
+      <div style="text-align:center;margin-bottom:20px;">
+        <span class="icfes-badge">ICFES · EVALUAR PARA AVANZAR</span>
+        <h1>Simulacro Saber 11°</h1>
+        <p class="sub">Cuadernillos 2020–2021 · Grado Undécimo</p>
+      </div>
 
-  <div class="areas-row">
-    <div class="area-pill">
-      <div class="area-icon">📐</div>
-      <strong>Matemáticas</strong>
-      20 preguntas · 60 min · Cuadernillo 1/2022
-    </div>
-    <div class="area-pill">
-      <div class="area-icon">📖</div>
-      <strong>Lectura Crítica</strong>
-      20 preguntas · 60 min · Cuadernillo 2/2021
-    </div>
-  </div>
+      <div class="info-chips">
+        <span class="info-chip">📋 5 áreas</span>
+        <span class="info-chip">⏱ 50 min / área</span>
+        <span class="info-chip">🎯 Puntaje 0 – 500</span>
+        <span class="info-chip">📜 Certificado al final</span>
+      </div>
 
-  <div class="info-row">
-    <div class="info-pill"><strong>40</strong>Preguntas</div>
-    <div class="info-pill"><strong>120</strong>Minutos</div>
-    <div class="info-pill"><strong>A – D</strong>Opciones</div>
-    <div class="info-pill"><strong>0 – 200</strong>Puntaje total</div>
-  </div>
+      <div class="areas-preview">
+        <h3>Áreas evaluadas</h3>
+        <div class="area-chips">
+          <span class="area-chip mat">📐 Matemáticas</span>
+          <span class="area-chip lc">📚 Lectura Crítica</span>
+          <span class="area-chip cn">🔬 Ciencias Naturales</span>
+          <span class="area-chip soc">🌍 Sociales y Ciudadanas</span>
+          <span class="area-chip en">🇬🇧 Inglés</span>
+        </div>
+      </div>
 
-  <div class="instructions-box">
-    <h3>📋 Antes de empezar</h3>
-    <ul>
-      <li>Primero harás Matemáticas (60 min), luego Lectura Crítica (60 min).</li>
-      <li>Cada sección tiene su propio cronómetro de 60 minutos.</li>
-      <li>Al terminar la primera sección podrás descansar antes de continuar.</li>
-      <li>Al finalizar ambas secciones verás tu puntaje de 0 a 200.</li>
-      <li>Puedes enviar antes si respondes todas las preguntas.</li>
-    </ul>
-  </div>
-
-  <button class="btn-start" onclick="startSection('mat')">▶&nbsp;&nbsp;Comenzar Simulacro</button>
-</section>
-
-
-<!-- ════════════════ EXAM ════════════════ -->
-<section id="exam" class="screen">
-  <div class="exam-bar">
-    <div>
-      <div class="bar-title" id="bar-title">📐 Matemáticas 11°
-        <span id="bar-sublabel">Cuadernillo 1 · 2022</span>
+      <div class="name-form" style="margin-top:24px;">
+        <label for="student-name">Ingresa tu nombre completo:</label>
+        <input type="text" id="student-name"
+               placeholder="Ej: María Fernanda García López"
+               autocomplete="off"
+               onkeydown="if(event.key==='Enter')startExam()">
+        <button class="btn-start" onclick="startExam()">Comenzar Simulacro ▶</button>
       </div>
     </div>
-    <div style="display:flex;align-items:center;gap:10px">
-      <span class="section-badge" id="section-badge">Sección 1 / 2</span>
-      <div id="timer">60:00</div>
-    </div>
-    <div class="bar-progress">Respondidas<br><strong id="bar-count">0 / 20</strong></div>
   </div>
-  <div id="progress-bar-wrap"><div id="progress-bar-fill"></div></div>
+</div>
+
+<!-- ══════════════════════════════════════
+     EXAM
+══════════════════════════════════════ -->
+<div id="exam" class="screen">
+  <div class="exam-header">
+    <div class="section-badge" id="sec-badge">
+      <span id="sec-icon-h">📐</span>
+      <span id="sec-label-h">Matemáticas</span>
+    </div>
+    <div class="progress-info">
+      Pregunta <strong id="q-cur">1</strong> / <span id="q-tot">20</span>
+    </div>
+    <div class="timer-disp" id="timer-disp">50:00</div>
+  </div>
 
   <div class="exam-body">
-    <div class="pdf-side">
-      <div class="pdf-toolbar">
-        📄 <strong id="pdf-toolbar-label">Cuadernillo de preguntas</strong>
-        &nbsp;—&nbsp; Usa los controles del visor para navegar.
-        &nbsp;|&nbsp; <a id="pdf-new-tab" href="pdfs/Cuadernillo-Matematicas-11-1.pdf" target="_blank">Abrir en nueva pestaña ↗</a>
-      </div>
-      <iframe id="pdf-frame" src="pdfs/Cuadernillo-Matematicas-11-1.pdf#toolbar=1&navpanes=0&scrollbar=1&page=2"
-              title="Cuadernillo"></iframe>
+    <div class="pdf-panel">
+      <iframe id="pdf-iframe" src="" title="Cuadernillo"></iframe>
     </div>
-
-    <div class="ans-side">
-      <div class="ans-header" id="ans-header">📝 Hoja de Respuestas</div>
+    <div class="answer-panel">
+      <div class="nav-label">Preguntas</div>
       <div class="nav-grid" id="nav-grid"></div>
-      <div class="ans-list" id="ans-list"></div>
-      <div class="ans-footer">
-        <p class="answered-label" id="ans-label">0 de 20 respondidas</p>
-        <button class="btn-finish" onclick="tryFinish()">Finalizar sección ✔</button>
+      <hr style="border:none;border-top:1px solid #eee;">
+      <div>
+        <div class="q-label">Pregunta actual</div>
+        <div class="q-num-big" id="q-cur-big">1</div>
+      </div>
+      <div class="opt-grid" id="opt-grid"></div>
+      <button class="btn-finish-section" onclick="confirmFinish()">
+        ⏹ Finalizar sección
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     TRANSITION — Resultado de sección
+══════════════════════════════════════ -->
+<div id="transition" class="screen">
+  <div class="tr-card">
+    <div class="tr-icon" id="tr-icon">📐</div>
+    <div class="tr-title" id="tr-title">Sección completada</div>
+    <div class="tr-sub"   id="tr-sub">Tiempo: 50:00</div>
+
+    <div class="ring-sm">
+      <svg viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="42" fill="none" stroke="#e0e0e0" stroke-width="10"/>
+        <circle id="tr-ring-arc" cx="50" cy="50" r="42" fill="none"
+          stroke="#1565c0" stroke-width="10"
+          stroke-dasharray="263.89" stroke-dashoffset="263.89"
+          stroke-linecap="round" transform="rotate(-90 50 50)"/>
+      </svg>
+      <div class="ring-text">
+        <div class="ring-num" id="tr-score-num">—</div>
+        <div class="ring-max">/100</div>
       </div>
     </div>
+
+    <div class="topic-cards" id="tr-topics"></div>
+    <button class="btn-next" id="tr-next-btn" onclick="goNext()">Siguiente →</button>
   </div>
-</section>
+</div>
 
-
-<!-- ════════════════ TRANSITION ════════════════ -->
-<section id="transition" class="screen">
-  <div class="trans-icon">✅</div>
-  <h1>¡Sección 1 completada!</h1>
-  <h2>Matemáticas finalizada · Ahora comienza Lectura Crítica</h2>
-
-  <div class="trans-score-box">
-    <div class="ts-label">Tu puntaje en Matemáticas</div>
-    <div>
-      <span class="ts-num" id="trans-score">—</span>
-      <span class="ts-denom"> / 100</span>
+<!-- ══════════════════════════════════════
+     RESULTS — Puntajes finales
+══════════════════════════════════════ -->
+<div id="results" class="screen">
+  <div class="results-wrap">
+    <div class="res-header">
+      <div class="big-icon">🎓</div>
+      <h2>¡Simulacro Finalizado!</h2>
+      <p class="res-student" id="res-student"></p>
+      <p class="res-date"    id="res-date"></p>
     </div>
-  </div>
 
-  <div class="next-section-box">
-    <h3>📖 Lectura Crítica — Sección 2</h3>
-    <ul>
-      <li>20 preguntas de comprensión lectora.</li>
-      <li>Tienes 60 minutos para esta sección.</li>
-      <li>Textos: ensayos, caricatura, narrativa, divulgación científica.</li>
-      <li>Al terminar verás tu puntaje combinado de 0 a 200.</li>
-    </ul>
-  </div>
+    <div class="scores-row" id="scores-row"></div>
 
-  <button class="btn-start" onclick="startSection('lc')">▶&nbsp;&nbsp;Iniciar Lectura Crítica</button>
-</section>
-
-
-<!-- ════════════════ RESULTS ════════════════ -->
-<section id="results" class="screen">
-  <div class="res-header">
-    <h1>Resultados del Simulacro ICFES</h1>
-    <h2>Matemáticas + Lectura Crítica · Grado 11°</h2>
-    <div class="scores-row">
+    <div class="total-card">
+      <div class="total-label">Puntaje Total ICFES</div>
       <div>
-        <div class="score-ring" id="ring-mat">
-          <span class="num" id="num-mat">—</span>
-          <span class="denom">/ 100</span>
-          <span class="area-lbl">Matemáticas</span>
+        <span class="total-num" id="res-total">0</span>
+        <span class="total-of"> / 500</span>
+      </div>
+      <div class="total-level" id="res-level"></div>
+    </div>
+
+    <div class="all-feedback" id="all-feedback"></div>
+
+    <button class="cert-btn" onclick="printCertificate()">
+      🖨&nbsp; Imprimir / Descargar Certificado
+    </button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     CERTIFICATE (solo para imprimir)
+══════════════════════════════════════ -->
+<div id="certificate">
+  <div class="cert-page">
+    <div class="cert-border-outer">
+      <div class="cert-wm">ICFES</div>
+      <div class="cert-border-inner">
+        <div class="cert-content">
+          <div class="cert-header">
+            <div class="cert-logo-text">Instituto Colombiano para la Evaluación de la Educación</div>
+            <div class="cert-title">Certificado de Participación</div>
+            <div style="font-size:11pt;color:#444;margin-top:3mm;font-style:italic;">
+              Simulacro Evaluar para Avanzar — Pruebas Saber 11°
+            </div>
+          </div>
+          <hr class="cert-hr">
+          <p class="cert-certifies">Se certifica que el/la estudiante</p>
+          <div class="cert-name-box">
+            <span class="cert-name" id="cert-name">Nombre del Estudiante</span>
+          </div>
+          <p class="cert-text">
+            completó satisfactoriamente el Simulacro de Pruebas Saber 11° —<br>
+            <em>Evaluar para Avanzar</em>, Grado Undécimo,<br>
+            obteniendo los siguientes resultados:
+          </p>
+          <hr class="cert-hr2">
+          <div class="cert-scores-title">Resultados por Área</div>
+          <table class="cert-table">
+            <thead>
+              <tr>
+                <th>Área</th>
+                <th style="text-align:center">Correctas</th>
+                <th style="text-align:center">Puntaje</th>
+              </tr>
+            </thead>
+            <tbody id="cert-tbody"></tbody>
+          </table>
+          <div class="cert-date-line" id="cert-date-line"></div>
+          <hr class="cert-hr2" style="margin-top:5mm;">
+          <div class="cert-footer">
+            <div class="cert-sig">
+              <span class="cert-sig-line"></span>
+              <span class="cert-sig-role">Docente Responsable</span>
+            </div>
+            <div class="cert-sig">
+              <span class="cert-sig-line"></span>
+              <span class="cert-sig-role">Rector(a) de la Institución</span>
+            </div>
+          </div>
+          <div class="cert-bottom">
+            www.icfes.gov.co &nbsp;·&nbsp; Evaluar para Avanzar 3° a 11° &nbsp;·&nbsp; Colombia
+          </div>
         </div>
       </div>
-      <div class="scores-plus">+</div>
-      <div>
-        <div class="score-ring" id="ring-lc">
-          <span class="num" id="num-lc">—</span>
-          <span class="denom">/ 100</span>
-          <span class="area-lbl">Lectura Crítica</span>
-        </div>
-      </div>
-      <div class="scores-plus">=</div>
-      <div>
-        <div class="score-ring big" id="ring-total">
-          <span class="num" id="num-total">—</span>
-          <span class="denom">/ 200</span>
-          <span class="area-lbl">Puntaje total</span>
-        </div>
-      </div>
     </div>
-    <p class="score-msg" id="score-msg" style="margin:0 auto;text-align:center"></p>
   </div>
+</div>
 
-  <div class="res-body">
-    <!-- Combined stats -->
-    <div class="stats-row">
-      <div class="stat-box"><div class="n g" id="s-ok-total">0</div><div class="lbl">Correctas totales</div></div>
-      <div class="stat-box"><div class="n r" id="s-err-total">0</div><div class="lbl">Incorrectas totales</div></div>
-      <div class="stat-box"><div class="n y" id="s-skip-total">0</div><div class="lbl">Sin responder</div></div>
-      <div class="stat-box"><div class="n b" id="s-time-total">—</div><div class="lbl">Tiempo total</div></div>
-    </div>
-
-    <!-- ── MATEMÁTICAS SECTION ── -->
-    <div class="sec-heading">
-      <span class="sh-icon">📐</span>
-      <div>
-        <div class="sh-title">Matemáticas</div>
-        <div class="sh-sub">Cuadernillo 1 · 2022</div>
-      </div>
-    </div>
-
-    <div class="stats-row">
-      <div class="stat-box"><div class="n g" id="s-ok-mat">0</div><div class="lbl">Correctas</div></div>
-      <div class="stat-box"><div class="n r" id="s-err-mat">0</div><div class="lbl">Incorrectas</div></div>
-      <div class="stat-box"><div class="n y" id="s-skip-mat">0</div><div class="lbl">Sin responder</div></div>
-      <div class="stat-box"><div class="n"  id="s-time-mat">—</div><div class="lbl">Tiempo usado</div></div>
-    </div>
-
-    <p class="section-title">📊 Retroalimentación Matemáticas</p>
-    <div class="topics-grid" id="topics-grid-mat"></div>
-
-    <p class="section-title">🔍 Detalle por pregunta — Matemáticas</p>
-    <div class="detail-grid" id="detail-grid-mat"></div>
-
-    <hr class="area-divider">
-
-    <!-- ── LECTURA CRÍTICA SECTION ── -->
-    <div class="sec-heading">
-      <span class="sh-icon">📖</span>
-      <div>
-        <div class="sh-title">Lectura Crítica</div>
-        <div class="sh-sub">Cuadernillo 2 · 2021</div>
-      </div>
-    </div>
-
-    <div class="stats-row">
-      <div class="stat-box"><div class="n g" id="s-ok-lc">0</div><div class="lbl">Correctas</div></div>
-      <div class="stat-box"><div class="n r" id="s-err-lc">0</div><div class="lbl">Incorrectas</div></div>
-      <div class="stat-box"><div class="n y" id="s-skip-lc">0</div><div class="lbl">Sin responder</div></div>
-      <div class="stat-box"><div class="n"  id="s-time-lc">—</div><div class="lbl">Tiempo usado</div></div>
-    </div>
-
-    <p class="section-title">📊 Retroalimentación Lectura Crítica</p>
-    <div class="topics-grid" id="topics-grid-lc"></div>
-
-    <p class="section-title">🔍 Detalle por pregunta — Lectura Crítica</p>
-    <div class="detail-grid" id="detail-grid-lc"></div>
-
-    <button class="btn-retry" onclick="resetToLanding()">🔄 Intentar de nuevo</button>
-  </div>
-</section>
-
-
-<!-- ════════════════ SCRIPT ════════════════ -->
 <script>
-/* ══════════════════════════════════════════
-   DATA
-══════════════════════════════════════════ */
+// ═══════════════════════════════════════════════════
+// DATOS DE SECCIONES
+// ═══════════════════════════════════════════════════
+const SECTION_ORDER = ['mat','lc','cn','soc','en'];
+
 const SECTIONS = {
-  mat: {
-    key: {
-      1:'D', 2:'B', 3:'A', 4:'A', 5:'C',
-      6:'D', 7:'C', 8:'B', 9:'C', 10:'B',
-      11:'C', 12:'C', 13:'B', 14:'A', 15:'D',
-      16:'B', 17:'B', 18:'B', 19:'C', 20:'C'
-    },
-    total: 20,
-    pdf: 'pdfs/Cuadernillo-Matematicas-11-1.pdf',
-    pdfPage: 2,
-    barTitle: '📐 Matemáticas 11°',
-    barSub: 'Cuadernillo 1 · 2022',
-    badge: 'Sección 1 / 2',
-    ansHeader: '📝 Hoja de Respuestas',
-    pdfLabel: 'Cuadernillo Matemáticas',
-    topics: [
-      {
-        id: 'algebra', name: 'Álgebra y Cálculo', color: '#1a3a6b',
-        questions: [2, 3, 6, 7, 9, 10, 11, 12, 13, 14, 16, 17],
-        subtopics: {
-          2:  'Funciones cuadráticas — gráfica desde ecuación',
-          3:  'Funciones cuadráticas — traslaciones verticales',
-          6:  'Funciones exponenciales — tabla de valores',
-          7:  'Dominio de funciones radicales',
-          9:  'Parábolas — condiciones para determinar su ecuación',
-          10: 'Expresiones con radicales — propiedades',
-          11: 'Ordenar números decimales',
-          12: 'Funciones lineales — propiedades desde gráfica',
-          13: 'Proporcionalidad directa e inversa',
-          14: 'Función lineal desde tabla de datos',
-          16: 'Ecuación lineal en contexto (punto de equilibrio)',
-          17: 'Operaciones con enteros en recta numérica'
-        },
-        tip: 'Refuerza identificación de gráficas de funciones y su correspondencia algebraica.'
-      },
-      {
-        id: 'estadistica', name: 'Estadística y Probabilidad', color: '#8e44ad',
-        questions: [1, 4, 8, 15],
-        subtopics: {
-          1:  'Consolidar datos de gráficas circular y de barras',
-          4:  'Reconocer inconsistencias en tablas de datos',
-          8:  'Probabilidad de eventos con dados',
-          15: 'Conteo — principio multiplicativo (permutaciones)'
-        },
-        tip: 'Practica lectura e interpretación de distintos tipos de gráficas y conteo básico.'
-      },
-      {
-        id: 'geometria', name: 'Geometría', color: '#16a085',
-        questions: [5, 18, 19, 20],
-        subtopics: {
-          5:  'Área de figuras compuestas',
-          18: 'Paralelismo justificado por ángulos rectos',
-          19: 'Cónicas — elipse y circunferencia',
-          20: 'Transformaciones geométricas — orientación'
-        },
-        tip: 'Practica cálculo de áreas, propiedades de ángulos y transformaciones geométricas.'
-      }
+  mat:{
+    label:'Matemáticas', icon:'📐', color:'#1565c0',
+    pdf:'pdfs/Cuadernillo-Matematicas-11-1.pdf',
+    total:20,
+    key:{1:'D',2:'B',3:'A',4:'A',5:'C',6:'D',7:'C',8:'B',9:'C',10:'B',
+         11:'C',12:'C',13:'B',14:'A',15:'D',16:'B',17:'B',18:'B',19:'C',20:'C'},
+    topics:[
+      {name:'Álgebra y Cálculo',         qs:[2,3,6,7,9,10,11,12,13,14,16,17],
+       tip:'Repasa funciones, ecuaciones y operaciones algebraicas.'},
+      {name:'Estadística y Probabilidad',qs:[1,4,8,15],
+       tip:'Practica análisis de datos, gráficas y cálculo de probabilidades.'},
+      {name:'Geometría',                 qs:[5,18,19,20],
+       tip:'Refuerza figuras, áreas, perímetros y transformaciones geométricas.'}
     ]
   },
-
-  lc: {
-    key: {
-      1:'D', 2:'A', 3:'C', 4:'A', 5:'D',
-      6:'A', 7:'B', 8:'C', 9:'A', 10:'D',
-      11:'A', 12:'A', 13:'C', 14:'D', 15:'B',
-      16:'B', 17:'A', 18:'B', 19:'B', 20:'D'
+  lc:{
+    label:'Lectura Crítica', icon:'📚', color:'#6a1b9a',
+    pdf:'pdfs/Cuadernillo-LecturaCritica-11-2.pdf',
+    total:20,
+    key:{1:'D',2:'A',3:'C',4:'A',5:'D',6:'A',7:'B',8:'C',9:'A',10:'D',
+         11:'A',12:'A',13:'C',14:'D',15:'B',16:'B',17:'A',18:'B',19:'B',20:'D'},
+    topics:[
+      {name:'Identificar y entender (local)',   qs:[8,9,14,16,19],
+       tip:'Mejora la comprensión detallada de oraciones y párrafos.'},
+      {name:'Comprender el texto (global)',     qs:[1,2,3,6,10,13,18,20],
+       tip:'Trabaja el tema central, propósito y estructura del texto.'},
+      {name:'Reflexionar y evaluar (crítica)',  qs:[4,5,7,11,12,15,17],
+       tip:'Practica evaluar argumentos e identificar la postura del autor.'}
+    ]
+  },
+  cn:{
+    label:'Ciencias Naturales', icon:'🔬', color:'#2e7d32',
+    pdf:'pdfs/Cuadernillo-CienciasNaturales.pdf',
+    total:20,
+    key:{1:'A',2:'A',3:'A',4:'A',5:'D',6:'D',7:'C',8:'A',9:'A',10:'C',
+         11:'C',12:'C',13:'D',14:'D',15:'C',16:'D',17:'D',18:'B',19:'C',20:'A'},
+    topics:[
+      {name:'Explicación de fenómenos',           qs:[1,3,4,7,9,13,18,19],
+       tip:'Refuerza conceptos de física y química para explicar fenómenos del entorno.'},
+      {name:'Indagación científica',              qs:[2,5,6,10,12,14,16,17],
+       tip:'Practica diseño experimental, hipótesis e interpretación de datos.'},
+      {name:'Uso comprensivo del conocimiento',   qs:[8,11,15,20],
+       tip:'Aplica conceptos científicos a situaciones cotidianas y naturales.'}
+    ]
+  },
+  soc:{
+    label:'Sociales y Ciudadanas', icon:'🌍', color:'#bf360c',
+    pdf:'pdfs/Cuadernillo-SocialesyCiudadanas-11-2.pdf',
+    total:20,
+    key:{1:'C',2:'C',3:'B',4:'D',5:'B',6:'A',7:'C',8:'C',9:'D',10:'A',
+         11:'D',12:'C',13:'D',14:'D',15:'B',16:'D',17:'A',18:'C',19:'A',20:'B'},
+    topics:[
+      {name:'Pensamiento Social',                       qs:[2,4,8,9,11,12,16,17,19],
+       tip:'Refuerza sistemas políticos, económicos y sociales de Colombia y el mundo.'},
+      {name:'Interpretación y análisis de perspectivas',qs:[1,5,6,7,10,14,15,18],
+       tip:'Practica analizar fuentes históricas y reconocer distintas perspectivas.'},
+      {name:'Pensamiento Reflexivo y Sistémico',        qs:[3,13,20],
+       tip:'Analiza causas, consecuencias y relaciones entre dimensiones sociales.'}
+    ]
+  },
+  en:{
+    label:'Inglés', icon:'🇬🇧', color:'#00695c',
+    pdf:'pdfs/Cuadernillo-Ingles-11-2.pdf',
+    total:25,
+    key:{1:'F',2:'C',3:'A',4:'B',5:'G',
+         6:'B',7:'C',8:'B',
+         9:'A',10:'C',11:'B',12:'A',13:'C',14:'A',
+         15:'D',16:'A',17:'D',18:'C',19:'B',
+         20:'D',21:'C',22:'A',23:'C',24:'B',25:'B'},
+    // Opciones especiales por pregunta (resto usa ['A','B','C','D'])
+    questionOpts:{
+      1:['A','B','C','D','E','F','G'],
+      2:['A','B','C','D','E','F','G'],
+      3:['A','B','C','D','E','F','G'],
+      4:['A','B','C','D','E','F','G'],
+      5:['A','B','C','D','E','F','G'],
+      6:['A','B','C'],7:['A','B','C'],8:['A','B','C'],
+      9:['A','B','C'],10:['A','B','C'],11:['A','B','C'],
+      12:['A','B','C'],13:['A','B','C'],14:['A','B','C']
     },
-    total: 20,
-    pdf: 'pdfs/Cuadernillo-LecturaCritica-11-2.pdf',
-    pdfPage: 2,
-    barTitle: '📖 Lectura Crítica 11°',
-    barSub: 'Cuadernillo 2 · 2021',
-    badge: 'Sección 2 / 2',
-    ansHeader: '📝 Hoja de Respuestas',
-    pdfLabel: 'Cuadernillo Lectura Crítica',
-    topics: [
-      {
-        id: 'lc-local', name: 'Identificar y entender', color: '#16a085',
-        questions: [8, 9, 14, 16, 19],
-        subtopics: {
-          8:  'Significado de "luz natural" según el contexto (Descartes)',
-          9:  'Paráfrasis del enunciado de Mafalda (Mafalda)',
-          14: 'Lugar donde ocurre la narración (Álvaro Mutis)',
-          16: 'Tiempo en que ocurren los hechos (Álvaro Mutis)',
-          19: 'Significado del cuantificador "alguna" (yagé / W. Davis)'
-        },
-        tip: 'Practica identificar información explícita y el significado de expresiones en contexto.'
-      },
-      {
-        id: 'lc-global', name: 'Comprender la articulación del texto', color: '#1a3a6b',
-        questions: [1, 2, 3, 6, 10, 13, 18, 20],
-        subtopics: {
-          1:  'Relación entre dos enunciados (La Contaminación Marina)',
-          2:  'Inferir la tesis contraria a la principal (La Contaminación Marina)',
-          3:  'Función de un enunciado en el argumento (La Contaminación Marina)',
-          6:  'Función de un enunciado en el argumento (Descartes)',
-          10: 'Relación entre elementos lingüísticos y no lingüísticos (Mafalda)',
-          13: 'Razones que apoyan la tesis del texto (Álvaro Mutis)',
-          18: 'Inferir la conclusión del texto (yagé / W. Davis)',
-          20: 'Función de las partes desde una lectura global (yagé / W. Davis)'
-        },
-        tip: 'Practica identificar cómo se organiza y articula el argumento global de un texto.'
-      },
-      {
-        id: 'lc-reflexion', name: 'Reflexionar y evaluar', color: '#8e44ad',
-        questions: [4, 5, 7, 11, 12, 15, 17],
-        subtopics: {
-          4:  'Reconocer recursos argumentativos (La Contaminación Marina)',
-          5:  'Intención comunicativa de un enunciado (Descartes)',
-          7:  'Por qué la tesis se sostiene sobre los argumentos (Descartes)',
-          11: 'Identificar supuestos implícitos (Mafalda)',
-          12: 'Inferir el propósito comunicativo (Mafalda)',
-          15: 'Reconocer recursos retóricos (Álvaro Mutis)',
-          17: 'Inferir la continuación más adecuada (yagé / W. Davis)'
-        },
-        tip: 'Practica evaluar estrategias discursivas, recursos retóricos y supuestos del texto.'
-      }
+    topics:[
+      {name:'Part 1 — Léxico (Pre-A1/A1)',                qs:[1,2,3,4,5],
+       tip:'Amplía vocabulario temático: animales, salud y vida cotidiana.'},
+      {name:'Part 2 — Pragmática (A1/A2)',                 qs:[6,7,8],
+       tip:'Practica respuestas naturales en conversaciones cotidianas en inglés.'},
+      {name:'Parts 3 y 4 — Comprensión lectora (A2/B1)',  qs:[9,10,11,12,13,14,15,16,17,18,19],
+       tip:'Lee textos en inglés y practica preguntas literales e inferenciales.'},
+      {name:'Part 5 — Léxico y gramática (B1)',            qs:[20,21,22,23,24,25],
+       tip:'Refuerza vocabulario contextual y estructuras gramaticales nivel B1.'}
     ]
   }
 };
 
-const SECS_TOTAL = 60 * 60;
+const SECS_TOTAL = 50 * 60; // 50 minutos
 
-/* ══════════════════════════════════════════
-   STATE
-══════════════════════════════════════════ */
-let currentSection = 'mat';
-let answers        = {};       // answers for current section
-let matAnswers     = {};
-let lcAnswers      = {};
-let matElapsed     = 0;
-let lcElapsed      = 0;
-let secsLeft       = SECS_TOTAL;
-let startTs        = null;
-let interval       = null;
-let examDone       = false;
+// ═══════════════════════════════════════════════════
+// ESTADO
+// ═══════════════════════════════════════════════════
+let studentName = '';
+let secIdx   = 0;
+let curQ     = 1;
+let answers  = {mat:{},lc:{},cn:{},soc:{},en:{}};
+let scores   = {mat:0,lc:0,cn:0,soc:0,en:0};
+let timerID  = null;
+let timeLeft = SECS_TOTAL;
 
-/* ══════════════════════════════════════════
-   SCREEN
-══════════════════════════════════════════ */
-function show(id) {
-  ['landing','exam','transition','results'].forEach(s => {
-    const el = document.getElementById(s);
-    el.classList.remove('active');
-    el.style.display = 'none';
-  });
-  const el = document.getElementById(id);
-  el.style.display = '';
-  el.classList.add('active');
+// ═══════════════════════════════════════════════════
+// UTILIDADES
+// ═══════════════════════════════════════════════════
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
 }
 
-/* ══════════════════════════════════════════
-   START A SECTION
-══════════════════════════════════════════ */
-function startSection(sec) {
-  currentSection = sec;
-  const cfg = SECTIONS[sec];
-  answers  = {};
-  secsLeft = SECS_TOTAL;
-  examDone = false;
-  startTs  = Date.now();
+// ═══════════════════════════════════════════════════
+// LANDING
+// ═══════════════════════════════════════════════════
+function startExam(){
+  const inp  = document.getElementById('student-name');
+  const name = inp.value.trim();
+  if(!name){
+    inp.style.borderColor = '#e53935';
+    inp.focus();
+    return;
+  }
+  studentName = name;
+  secIdx = 0;
+  showScreen('exam');
+  loadSection();
+}
 
-  // Update exam UI for this section
-  document.getElementById('bar-title').innerHTML =
-    cfg.barTitle + `<span id="bar-sublabel">${cfg.barSub}</span>`;
-  document.getElementById('section-badge').textContent = cfg.badge;
-  document.getElementById('pdf-toolbar-label').textContent = cfg.pdfLabel;
-  const pdfLink = cfg.pdf;
-  document.getElementById('pdf-new-tab').href = pdfLink;
-  document.getElementById('pdf-frame').src =
-    `${cfg.pdf}#toolbar=1&navpanes=0&scrollbar=1&page=${cfg.pdfPage}`;
-  document.getElementById('ans-header').textContent = cfg.ansHeader;
+// ═══════════════════════════════════════════════════
+// EXAMEN
+// ═══════════════════════════════════════════════════
+function loadSection(){
+  const sid = SECTION_ORDER[secIdx];
+  const sec = SECTIONS[sid];
+  curQ     = 1;
+  timeLeft = SECS_TOTAL;
 
-  buildAnswerSheet(sec);
-  buildNavGrid(sec);
-  updateProgress(sec);
+  // Header
+  const badge = document.getElementById('sec-badge');
+  badge.style.background = sec.color;
+  document.getElementById('sec-icon-h').textContent  = sec.icon;
+  document.getElementById('sec-label-h').textContent = sec.label;
+  document.getElementById('q-tot').textContent       = sec.total;
+
+  // PDF
+  document.getElementById('pdf-iframe').src = sec.pdf;
+
+  // Nav grid + primera pregunta
+  buildNav(sid);
+  loadQ(sid, 1);
+
+  // Timer
+  clearInterval(timerID);
   updateTimer();
-  clearInterval(interval);
-  interval = setInterval(() => {
-    secsLeft--;
+  timerID = setInterval(()=>{
+    timeLeft--;
     updateTimer();
-    if (secsLeft <= 0) autoFinish();
+    if(timeLeft <= 0){ clearInterval(timerID); finishSection(); }
   }, 1000);
-  show('exam');
 }
 
-/* ══════════════════════════════════════════
-   BUILD SHEET & NAV
-══════════════════════════════════════════ */
-function buildAnswerSheet(sec) {
-  const cfg  = SECTIONS[sec];
-  const list = document.getElementById('ans-list');
-  list.innerHTML = '';
-  for (let q = 1; q <= cfg.total; q++) {
-    list.insertAdjacentHTML('beforeend', `
-      <div class="q-row" id="qrow-${q}">
-        <div class="q-label">
-          <span>Pregunta ${q}</span>
-          <span id="qchk-${q}"></span>
-        </div>
-        <div class="opts">
-          ${['A','B','C','D'].map(o =>
-            `<button class="opt" id="opt-${q}-${o}" onclick="pick(${q},'${o}')">${o}</button>`
-          ).join('')}
-        </div>
-      </div>`);
+function buildNav(sid){
+  const sec  = SECTIONS[sid];
+  const grid = document.getElementById('nav-grid');
+  grid.innerHTML = '';
+  for(let i = 1; i <= sec.total; i++){
+    const b = document.createElement('button');
+    b.className  = 'nav-btn' + (i === 1 ? ' current' : '');
+    b.id         = `nb-${i}`;
+    b.textContent = i;
+    b.onclick    = () => loadQ(sid, i);
+    grid.appendChild(b);
   }
 }
 
-function buildNavGrid(sec) {
-  const cfg = SECTIONS[sec];
-  const g   = document.getElementById('nav-grid');
-  g.innerHTML = '';
-  for (let q = 1; q <= cfg.total; q++) {
-    g.insertAdjacentHTML('beforeend',
-      `<button class="nav-btn" id="nav-${q}" onclick="scrollToQ(${q})">${q}</button>`);
-  }
+function loadQ(sid, n){
+  const sec = SECTIONS[sid];
+  curQ = n;
+
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('current'));
+  const nb = document.getElementById(`nb-${n}`);
+  if(nb) nb.classList.add('current');
+
+  document.getElementById('q-cur').textContent     = n;
+  document.getElementById('q-cur-big').textContent = n;
+
+  const opts = (sec.questionOpts && sec.questionOpts[n]) || ['A','B','C','D'];
+  const grid = document.getElementById('opt-grid');
+  grid.innerHTML = '';
+  opts.forEach(o => {
+    const b = document.createElement('button');
+    b.className   = 'opt-btn' + (answers[sid][n] === o ? ' selected' : '');
+    b.textContent = o;
+    b.onclick     = () => pickAnswer(sid, n, o);
+    grid.appendChild(b);
+  });
 }
 
-/* ══════════════════════════════════════════
-   PICK
-══════════════════════════════════════════ */
-function pick(q, opt) {
-  if (examDone) return;
-  const cfg = SECTIONS[currentSection];
-  ['A','B','C','D'].forEach(o => document.getElementById(`opt-${q}-${o}`).classList.remove('sel'));
-  document.getElementById(`opt-${q}-${opt}`).classList.add('sel');
-  answers[q] = opt;
-  document.getElementById(`qrow-${q}`).classList.add('done');
-  document.getElementById(`qchk-${q}`).textContent = '✔';
-  document.getElementById(`nav-${q}`).classList.add('done');
-  updateProgress(currentSection);
+function pickAnswer(sid, n, opt){
+  answers[sid][n] = opt;
+  document.querySelectorAll('.opt-btn').forEach(b =>
+    b.classList.toggle('selected', b.textContent === opt));
+  const nb = document.getElementById(`nb-${n}`);
+  if(nb){ nb.classList.add('answered'); nb.classList.remove('current'); }
+  const sec = SECTIONS[sid];
+  if(n < sec.total) setTimeout(() => loadQ(sid, n + 1), 280);
 }
 
-function scrollToQ(q) {
-  document.getElementById(`qrow-${q}`)?.scrollIntoView({ behavior:'smooth', block:'center' });
+function updateTimer(){
+  const m  = String(Math.floor(timeLeft / 60)).padStart(2,'0');
+  const s  = String(timeLeft % 60).padStart(2,'0');
+  const el = document.getElementById('timer-disp');
+  el.textContent = `${m}:${s}`;
+  el.className   = 'timer-disp';
+  if(timeLeft <= 60)       el.classList.add('danger');
+  else if(timeLeft <= 300) el.classList.add('warn');
 }
 
-/* ══════════════════════════════════════════
-   PROGRESS
-══════════════════════════════════════════ */
-function updateProgress(sec) {
-  const cfg  = SECTIONS[sec];
-  const n    = Object.keys(answers).length;
-  document.getElementById('bar-count').textContent = `${n} / ${cfg.total}`;
-  document.getElementById('ans-label').textContent = `${n} de ${cfg.total} respondidas`;
-  document.getElementById('progress-bar-fill').style.width = `${(n / cfg.total) * 100}%`;
-}
-
-/* ══════════════════════════════════════════
-   TIMER
-══════════════════════════════════════════ */
-function updateTimer() {
-  const m  = Math.floor(secsLeft / 60);
-  const s  = secsLeft % 60;
-  const el = document.getElementById('timer');
-  el.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-  el.className   = secsLeft <= 60 ? 'danger' : secsLeft <= 300 ? 'warn' : '';
-}
-
-/* ══════════════════════════════════════════
-   FINISH
-══════════════════════════════════════════ */
-function tryFinish() {
-  const cfg     = SECTIONS[currentSection];
-  const missing = cfg.total - Object.keys(answers).length;
-  const msg = missing > 0
-    ? `Tienes ${missing} pregunta(s) sin responder.\n¿Deseas finalizar la sección de todas formas?`
-    : '¿Deseas finalizar esta sección y ver el resumen?';
-  if (confirm(msg)) finishSection();
-}
-
-function autoFinish() {
-  clearInterval(interval);
-  examDone = true;
-  alert('⏰ ¡El tiempo ha terminado! Pasando a la siguiente pantalla.');
+function confirmFinish(){
+  const sid = SECTION_ORDER[secIdx];
+  const sec = SECTIONS[sid];
+  const rem = sec.total - Object.keys(answers[sid]).length;
+  if(rem > 0 && !confirm(
+    `Tienes ${rem} pregunta(s) sin responder.\n¿Deseas finalizar esta sección de todas formas?`
+  )) return;
   finishSection();
 }
 
-function finishSection() {
-  clearInterval(interval);
-  examDone = true;
-  const elapsed = SECS_TOTAL - secsLeft;
-
-  if (currentSection === 'mat') {
-    matAnswers = { ...answers };
-    matElapsed = elapsed;
-    // Compute mat score for transition screen
-    const cfg = SECTIONS.mat;
-    let ok = 0;
-    for (let q = 1; q <= cfg.total; q++) {
-      if (answers[q] && answers[q] === cfg.key[q]) ok++;
-    }
-    const matScore = Math.round((ok / cfg.total) * 100);
-    document.getElementById('trans-score').textContent = matScore;
-    show('transition');
-  } else {
-    lcAnswers = { ...answers };
-    lcElapsed = elapsed;
-    showResults();
-  }
+function finishSection(){
+  clearInterval(timerID);
+  const sid = SECTION_ORDER[secIdx];
+  const sec = SECTIONS[sid];
+  let correct = 0;
+  for(let i = 1; i <= sec.total; i++)
+    if(answers[sid][i] === sec.key[i]) correct++;
+  scores[sid] = Math.round(correct * (100 / sec.total));
+  showTransition(sid, correct);
 }
 
-/* ══════════════════════════════════════════
-   RESULTS
-══════════════════════════════════════════ */
-function showResults() {
-  const matCfg = SECTIONS.mat;
-  const lcCfg  = SECTIONS.lc;
+// ═══════════════════════════════════════════════════
+// TRANSICIÓN
+// ═══════════════════════════════════════════════════
+function showTransition(sid, correct){
+  const sec   = SECTIONS[sid];
+  const score = scores[sid];
+  const used  = SECS_TOTAL - timeLeft;
+  const mm    = String(Math.floor(used / 60)).padStart(2,'0');
+  const ss    = String(used % 60).padStart(2,'0');
 
-  // Score calculation
-  let matOk = 0, matErr = 0, matSkip = 0;
-  for (let q = 1; q <= matCfg.total; q++) {
-    const a = matAnswers[q];
-    if (!a) matSkip++; else if (a === matCfg.key[q]) matOk++; else matErr++;
-  }
-  let lcOk = 0, lcErr = 0, lcSkip = 0;
-  for (let q = 1; q <= lcCfg.total; q++) {
-    const a = lcAnswers[q];
-    if (!a) lcSkip++; else if (a === lcCfg.key[q]) lcOk++; else lcErr++;
-  }
+  document.getElementById('tr-icon').textContent  = sec.icon;
+  document.getElementById('tr-title').textContent = `${sec.label} completada`;
+  document.getElementById('tr-sub').textContent   =
+    `Tiempo: ${mm}:${ss}  ·  ${correct}/${sec.total} correctas`;
 
-  const matScore   = Math.round((matOk / matCfg.total) * 100);
-  const lcScore    = Math.round((lcOk / lcCfg.total) * 100);
-  const totalScore = matScore + lcScore;
+  // Ring animado
+  const C      = 2 * Math.PI * 42; // ≈ 263.89
+  const offset = (C * (1 - score / 100)).toFixed(2);
+  const arc    = document.getElementById('tr-ring-arc');
+  arc.setAttribute('stroke', sec.color);
+  arc.setAttribute('stroke-dashoffset', offset);
+  document.getElementById('tr-score-num').textContent = score;
 
-  // Score rings
-  const ringColor = pct => pct >= 70 ? '#27ae60' : pct >= 50 ? '#f39c12' : '#e74c3c';
-  setRing('ring-mat',   'num-mat',   matScore,   100, ringColor(matScore));
-  setRing('ring-lc',    'num-lc',    lcScore,    100, ringColor(lcScore));
-  setRing('ring-total', 'num-total', totalScore, 200,
-    totalScore >= 140 ? '#27ae60' : totalScore >= 100 ? '#f39c12' : '#e74c3c');
-
-  // Global message
-  const msgs = [
-    [180, '¡Resultado sobresaliente! Dominas ambas áreas con maestría. 🏆'],
-    [140, '¡Muy buen desempeño! Sigue repasando algunos temas. 👍'],
-    [100, 'Resultado aceptable. Refuerza los temas con más dificultad. 📚'],
-    [0,   'Necesitas reforzar las dos áreas. ¡No te rindas, sigue practicando! 💪']
-  ];
-  document.getElementById('score-msg').textContent =
-    msgs.find(([min]) => totalScore >= min)[1];
-
-  // Time formatting
-  const fmtTime = s => {
-    const m = Math.floor(s / 60), sec = s % 60;
-    return `${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
-  };
-  const totalElapsed = matElapsed + lcElapsed;
-
-  // Combined stats
-  document.getElementById('s-ok-total').textContent   = matOk + lcOk;
-  document.getElementById('s-err-total').textContent  = matErr + lcErr;
-  document.getElementById('s-skip-total').textContent = matSkip + lcSkip;
-  document.getElementById('s-time-total').textContent = fmtTime(totalElapsed);
-
-  // Mat stats
-  document.getElementById('s-ok-mat').textContent   = matOk;
-  document.getElementById('s-err-mat').textContent  = matErr;
-  document.getElementById('s-skip-mat').textContent = matSkip;
-  document.getElementById('s-time-mat').textContent = fmtTime(matElapsed);
-
-  // LC stats
-  document.getElementById('s-ok-lc').textContent   = lcOk;
-  document.getElementById('s-err-lc').textContent  = lcErr;
-  document.getElementById('s-skip-lc').textContent = lcSkip;
-  document.getElementById('s-time-lc').textContent = fmtTime(lcElapsed);
-
-  // Topic feedback
-  buildTopicFeedback('topics-grid-mat', matCfg.topics, matCfg.key, matAnswers);
-  buildTopicFeedback('topics-grid-lc',  lcCfg.topics,  lcCfg.key,  lcAnswers);
-
-  // Detail grids
-  buildDetailGrid('detail-grid-mat', matCfg, matAnswers);
-  buildDetailGrid('detail-grid-lc',  lcCfg,  lcAnswers);
-
-  show('results');
-}
-
-function setRing(ringId, numId, score, max, color) {
-  document.getElementById(numId).textContent   = score;
-  const ring = document.getElementById(ringId);
-  ring.style.borderColor = color;
-  ring.style.color       = color;
-}
-
-/* ── TOPIC FEEDBACK ── */
-function buildTopicFeedback(gridId, topics, key, ans) {
-  const grid = document.getElementById(gridId);
-  grid.innerHTML = '';
-
-  topics.forEach(topic => {
-    const qs = topic.questions;
-    let tOk = 0, tErr = 0, tSkip = 0;
-    qs.forEach(q => {
-      const a = ans[q];
-      if (!a) tSkip++; else if (a === key[q]) tOk++; else tErr++;
-    });
-    const answered = tOk + tErr;
-    const pct = answered > 0 ? Math.round((tOk / qs.length) * 100) : null;
-
-    let level, badgeClass, fillClass, emoji, cardClass;
-    if (pct === null)   { level = 'Sin datos';  badgeClass = 'badge-none';  fillClass = 'fill-none';  emoji = '⬜'; cardClass = 'none'; }
-    else if (pct >= 75) { level = 'Dominado';   badgeClass = 'badge-great'; fillClass = 'fill-great'; emoji = '✅'; cardClass = 'great'; }
-    else if (pct >= 50) { level = 'Aceptable';  badgeClass = 'badge-good';  fillClass = 'fill-good';  emoji = '🟡'; cardClass = 'good'; }
-    else                { level = 'A reforzar'; badgeClass = 'badge-needs'; fillClass = 'fill-needs'; emoji = '🔴'; cardClass = 'needs'; }
-
-    const subList = qs.map(q => {
-      const a = ans[q];
-      const ic = (!a) ? '⬜' : (a === key[q]) ? '✅' : '❌';
-      return `<div style="display:flex;gap:6px;align-items:flex-start;margin:2px 0">
-        <span>${ic}</span><span><b>P${q}:</b> ${topic.subtopics[q]}</span>
-      </div>`;
-    }).join('');
-
-    grid.insertAdjacentHTML('beforeend', `
-      <div class="topic-card ${cardClass}">
-        <div class="topic-header">
-          <span class="topic-name">${emoji} ${topic.name}</span>
-          <span class="topic-badge ${badgeClass}">${level}</span>
-        </div>
-        <div class="topic-pcts">
-          <span>${tOk} correcta${tOk !== 1 ? 's' : ''} de ${qs.length}</span>
-          <span>${pct !== null ? pct + '%' : '—'}</span>
-        </div>
-        <div class="topic-bar-wrap">
-          <div class="topic-bar-fill ${fillClass}" style="width:${pct !== null ? pct : 0}%"></div>
-        </div>
-        <div class="topic-detail">
-          <div class="topic-qs">${subList}</div>
-          ${cardClass !== 'great' ? `<div class="topic-tip">💡 ${topic.tip}</div>` : ''}
-        </div>
-      </div>`);
+  // Feedback por tema
+  const box = document.getElementById('tr-topics');
+  box.innerHTML = '';
+  sec.topics.forEach(t => {
+    const ok   = t.qs.filter(q => answers[sid][q] === sec.key[q]).length;
+    const tot  = t.qs.length;
+    const pct  = Math.round(ok / tot * 100);
+    const good = pct >= 60;
+    box.innerHTML += `<div class="tc ${good ? 'good' : 'bad'}">
+      <div class="tc-name">${t.name}</div>
+      <div class="tc-stats">${ok}/${tot} correctas · ${pct}%</div>
+      ${!good ? `<div class="tc-tip">💡 ${t.tip}</div>` : ''}
+    </div>`;
   });
-}
 
-/* ── DETAIL GRID ── */
-function buildDetailGrid(gridId, cfg, ans) {
-  const grid = document.getElementById(gridId);
-  grid.innerHTML = '';
-
-  const qTopic = {};
-  cfg.topics.forEach(t => t.questions.forEach(q => qTopic[q] = t.name));
-
-  for (let q = 1; q <= cfg.total; q++) {
-    const a      = ans[q];
-    const k      = cfg.key[q];
-    const isOk   = a && a === k;
-    const isSkip = !a;
-    const cls    = isOk ? 'ok' : isSkip ? 'skip' : 'err';
-    const icon   = isOk ? '✅' : isSkip ? '⬜' : '❌';
-
-    let ansHtml;
-    if (isSkip)    ansHtml = `<span style="color:#999">Sin responder</span> · Correcta: <span class="c-ans">${k}</span>`;
-    else if (isOk) ansHtml = `Tu respuesta: <span class="c-ans">${a}</span> ✓`;
-    else           ansHtml = `Tu respuesta: <span class="w-ans">${a}</span> · Correcta: <span class="c-ans">${k}</span>`;
-
-    grid.insertAdjacentHTML('beforeend', `
-      <div class="det-card ${cls}">
-        <div style="flex:1">
-          <div class="det-q">Pregunta ${q}</div>
-          <div class="det-sub">${qTopic[q] || ''}</div>
-          <div class="det-ans">${ansHtml}</div>
-        </div>
-        <span class="det-icon">${icon}</span>
-      </div>`);
+  // Botón siguiente
+  const isLast = secIdx >= SECTION_ORDER.length - 1;
+  const btn    = document.getElementById('tr-next-btn');
+  if(isLast){
+    btn.textContent = '📊 Ver resultados finales';
+  } else {
+    const nxt = SECTIONS[SECTION_ORDER[secIdx + 1]];
+    btn.textContent = `Siguiente: ${nxt.icon} ${nxt.label} →`;
   }
+
+  showScreen('transition');
 }
 
-/* ══════════════════════════════════════════
-   RESET
-══════════════════════════════════════════ */
-function resetToLanding() {
-  clearInterval(interval);
-  matAnswers = {}; lcAnswers = {};
-  matElapsed = 0; lcElapsed = 0;
-  examDone   = false;
-  show('landing');
+function goNext(){
+  secIdx++;
+  if(secIdx >= SECTION_ORDER.length) showResults();
+  else { showScreen('exam'); loadSection(); }
 }
+
+// ═══════════════════════════════════════════════════
+// RESULTADOS
+// ═══════════════════════════════════════════════════
+function showResults(){
+  const now = new Date();
+  document.getElementById('res-student').textContent = `Estudiante: ${studentName}`;
+  document.getElementById('res-date').textContent    =
+    now.toLocaleDateString('es-CO',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+
+  // Tarjetas de puntaje con anillos SVG
+  const row = document.getElementById('scores-row');
+  row.innerHTML = '';
+  let total = 0;
+  SECTION_ORDER.forEach(sid => {
+    const sec = SECTIONS[sid];
+    const sc  = scores[sid];
+    total    += sc;
+    const R   = 35, C = 2 * Math.PI * R;
+    const off = (C * (1 - sc / 100)).toFixed(2);
+    row.innerHTML += `<div class="score-card">
+      <div class="score-card-icon">${sec.icon}</div>
+      <div class="score-card-label">${sec.label}</div>
+      <div class="ring-xs">
+        <svg viewBox="0 0 80 80">
+          <circle cx="40" cy="40" r="${R}" fill="none" stroke="#e0e0e0" stroke-width="8"/>
+          <circle cx="40" cy="40" r="${R}" fill="none" stroke="${sec.color}" stroke-width="8"
+            stroke-dasharray="${C.toFixed(2)}" stroke-dashoffset="${off}"
+            stroke-linecap="round" transform="rotate(-90 40 40)"/>
+        </svg>
+        <div class="rx-num">${sc}</div>
+      </div>
+    </div>`;
+  });
+
+  // Puntaje total y nivel
+  document.getElementById('res-total').textContent = total;
+  const levels = [
+    [450,'Desempeño Superior'],[350,'Desempeño Alto'],
+    [250,'Desempeño Básico'],[0,'Desempeño Bajo']
+  ];
+  const lvl = levels.find(([m]) => total >= m);
+  document.getElementById('res-level').textContent = lvl ? `Nivel: ${lvl[1]}` : '';
+
+  // Feedback completo por sección
+  const fb = document.getElementById('all-feedback');
+  fb.innerHTML = '';
+  SECTION_ORDER.forEach(sid => {
+    const sec = SECTIONS[sid];
+    const sc  = scores[sid];
+    let tHtml = '';
+    sec.topics.forEach(t => {
+      const ok   = t.qs.filter(q => answers[sid][q] === sec.key[q]).length;
+      const tot  = t.qs.length;
+      const pct  = Math.round(ok / tot * 100);
+      const good = pct >= 60;
+      tHtml += `<div class="tc ${good ? 'good' : 'bad'}">
+        <div class="tc-name">${t.name}</div>
+        <div class="tc-stats">${ok}/${tot} correctas · ${pct}%</div>
+        ${!good ? `<div class="tc-tip">💡 ${t.tip}</div>` : ''}
+      </div>`;
+    });
+    fb.innerHTML += `<div class="sf-card">
+      <div class="sf-head">
+        <span class="sf-icon">${sec.icon}</span>
+        <span class="sf-title">${sec.label}</span>
+        <span class="sf-score" style="color:${sec.color}">${sc}/100</span>
+      </div>
+      <div class="topic-cards">${tHtml}</div>
+    </div>`;
+  });
+
+  // Construir certificado
+  buildCertificate(total, now);
+
+  showScreen('results');
+}
+
+// ═══════════════════════════════════════════════════
+// CERTIFICADO
+// ═══════════════════════════════════════════════════
+function buildCertificate(total, now){
+  document.getElementById('cert-name').textContent      = studentName;
+  document.getElementById('cert-date-line').textContent =
+    `Fecha: ${now.toLocaleDateString('es-CO',{year:'numeric',month:'long',day:'numeric'})}`;
+
+  let rows = '';
+  SECTION_ORDER.forEach(sid => {
+    const sec = SECTIONS[sid];
+    const sc  = scores[sid];
+    const ok  = Object.keys(answers[sid])
+      .filter(q => answers[sid][q] === sec.key[parseInt(q)]).length;
+    rows += `<tr>
+      <td>${sec.icon} ${sec.label}</td>
+      <td style="text-align:center">${ok} / ${sec.total}</td>
+      <td style="text-align:center"><strong>${sc}</strong> / 100</td>
+    </tr>`;
+  });
+  rows += `<tr class="total-row">
+    <td colspan="2"><strong>PUNTAJE TOTAL ICFES</strong></td>
+    <td style="text-align:center"><strong>${total} / 500</strong></td>
+  </tr>`;
+  document.getElementById('cert-tbody').innerHTML = rows;
+}
+
+function printCertificate(){
+  window.print();
+}
+
+// ═══════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('student-name').focus();
+});
 </script>
 </body>
 </html>
