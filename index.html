@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Simulacro Matemáticas 11° | Evaluar para Avanzar 2022</title>
+  <title>Simulacro ICFES 11° | Matemáticas + Lectura Crítica</title>
   <style>
     :root {
       --blue:   #1a3a6b;
@@ -23,33 +23,42 @@
 
     /* ── SCREENS ── */
     .screen { display: none; }
-    #landing.active { display: flex; flex-direction: column; min-height: 100vh; align-items: center; justify-content: center; }
-    #exam.active    { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
-    #results.active { display: flex; flex-direction: column; min-height: 100vh; }
+    #landing.active    { display: flex; flex-direction: column; min-height: 100vh; align-items: center; justify-content: center; }
+    #exam.active       { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+    #transition.active { display: flex; flex-direction: column; min-height: 100vh; align-items: center; justify-content: center; }
+    #results.active    { display: flex; flex-direction: column; min-height: 100vh; }
 
     /* ── LANDING ── */
     #landing {
       background: linear-gradient(145deg, #0e2a52 0%, #1a6191 60%, #0e7d8a 100%);
       color: var(--white); text-align: center; padding: 40px 24px;
     }
-    .brand { font-size: 3.5rem; margin-bottom: 8px; }
+    .brand { font-size: 3rem; margin-bottom: 8px; }
     #landing h1 { font-size: 2.2rem; font-weight: 800; letter-spacing: -.5px; }
-    #landing h2 { font-size: 1.1rem; font-weight: 400; opacity: .85; margin: 8px 0 28px; }
+    #landing h2 { font-size: 1.05rem; font-weight: 400; opacity: .85; margin: 8px 0 24px; }
 
-    .info-row { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin: 0 0 28px; }
+    .areas-row { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin: 0 0 20px; }
+    .area-pill {
+      background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.3);
+      border-radius: 12px; padding: 12px 22px; font-size: .9rem; text-align: center; min-width: 160px;
+    }
+    .area-pill .area-icon { font-size: 1.8rem; margin-bottom: 4px; }
+    .area-pill strong { display: block; font-size: 1rem; margin-bottom: 2px; }
+
+    .info-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin: 0 0 24px; }
     .info-pill {
       background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.3);
-      border-radius: 50px; padding: 10px 22px; font-size: .95rem;
+      border-radius: 50px; padding: 10px 20px; font-size: .9rem;
     }
-    .info-pill strong { font-size: 1.4rem; display: block; }
+    .info-pill strong { font-size: 1.3rem; display: block; }
 
     .instructions-box {
       background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.25);
-      border-radius: 14px; padding: 20px 28px; max-width: 520px;
-      text-align: left; margin: 0 auto 32px;
+      border-radius: 14px; padding: 18px 26px; max-width: 520px;
+      text-align: left; margin: 0 auto 28px;
     }
-    .instructions-box h3 { font-size: 1rem; margin-bottom: 12px; opacity: .9; }
-    .instructions-box li { list-style: none; padding: 5px 0 5px 22px; position: relative; font-size: .93rem; opacity: .9; }
+    .instructions-box h3 { font-size: 1rem; margin-bottom: 10px; opacity: .9; }
+    .instructions-box li { list-style: none; padding: 5px 0 5px 22px; position: relative; font-size: .88rem; opacity: .9; }
     .instructions-box li::before { content: '→'; position: absolute; left: 0; color: #7dd3fc; font-weight: bold; }
 
     .btn-start {
@@ -66,7 +75,13 @@
       display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-shrink: 0;
     }
     .bar-title { font-weight: 700; font-size: 1rem; }
-    .bar-title span { opacity: .7; font-weight: 400; font-size: .85rem; display: block; }
+    .bar-title span { opacity: .7; font-weight: 400; font-size: .82rem; display: block; }
+
+    .section-badge {
+      background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.3);
+      border-radius: 20px; padding: 4px 12px; font-size: .78rem; font-weight: 700;
+      letter-spacing: .3px;
+    }
 
     #timer {
       font-family: 'Courier New', monospace; font-size: 1.6rem; font-weight: 700;
@@ -106,7 +121,6 @@
       padding: 12px 14px; font-weight: 700; font-size: 1rem;
       text-align: center; flex-shrink: 0;
     }
-
     .nav-grid {
       display: grid; grid-template-columns: repeat(5, 1fr);
       gap: 4px; padding: 10px; border-bottom: 2px solid var(--border); flex-shrink: 0;
@@ -126,14 +140,12 @@
       margin-bottom: 6px; overflow: hidden; transition: border-color .2s, background .2s;
     }
     .q-row.done { border-color: var(--blue); background: #eef2fc; }
-
     .q-label {
       background: #e8edf5; padding: 5px 10px;
       font-size: .8rem; font-weight: 700; color: var(--blue);
       display: flex; justify-content: space-between;
     }
     .q-row.done .q-label { background: var(--blue); color: white; }
-
     .opts { display: flex; gap: 4px; padding: 6px; }
     .opt {
       flex: 1; border: 2px solid #d5dce8; background: white; border-radius: 6px;
@@ -152,51 +164,93 @@
     }
     .btn-finish:hover { background: #bf530a; }
 
+    /* ── TRANSITION ── */
+    #transition {
+      background: linear-gradient(145deg, #0e2a52 0%, #1a6191 60%, #0e7d8a 100%);
+      color: var(--white); text-align: center; padding: 40px 24px;
+    }
+    .trans-icon { font-size: 4rem; margin-bottom: 16px; }
+    #transition h1 { font-size: 1.9rem; font-weight: 800; margin-bottom: 8px; }
+    #transition h2 { font-size: 1rem; opacity: .8; margin-bottom: 28px; }
+    .trans-score-box {
+      background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.3);
+      border-radius: 16px; padding: 20px 32px; margin: 0 auto 28px; display: inline-block;
+    }
+    .trans-score-box .ts-label { font-size: .9rem; opacity: .8; margin-bottom: 6px; }
+    .trans-score-box .ts-num { font-size: 3.5rem; font-weight: 800; line-height: 1; }
+    .trans-score-box .ts-denom { font-size: 1rem; opacity: .7; }
+    .next-section-box {
+      background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.25);
+      border-radius: 14px; padding: 18px 26px; max-width: 460px;
+      text-align: left; margin: 0 auto 28px;
+    }
+    .next-section-box h3 { font-size: 1rem; margin-bottom: 10px; }
+    .next-section-box li { list-style: none; padding: 4px 0 4px 20px; position: relative; font-size: .88rem; opacity: .9; }
+    .next-section-box li::before { content: '→'; position: absolute; left: 0; color: #7dd3fc; font-weight: bold; }
+
     /* ── RESULTS ── */
     #results { background: var(--bg); }
     .res-header {
       background: linear-gradient(135deg, var(--blue) 0%, #1a6191 100%);
-      color: white; padding: 36px 24px; text-align: center;
+      color: white; padding: 32px 24px; text-align: center;
     }
-    .res-header h1 { font-size: 1.8rem; }
-    .res-header h2 { font-size: .95rem; opacity: .8; margin-top: 4px; font-weight: 400; }
+    .res-header h1 { font-size: 1.7rem; }
+    .res-header h2 { font-size: .9rem; opacity: .8; margin-top: 4px; font-weight: 400; }
 
-    .score-wrap {
+    .scores-row {
       display: flex; align-items: center; justify-content: center;
-      margin: 24px 0 8px; gap: 24px; flex-wrap: wrap;
+      margin: 24px 0 8px; gap: 18px; flex-wrap: wrap;
     }
     .score-ring {
-      width: 140px; height: 140px; border-radius: 50%;
-      background: rgba(255,255,255,.12); border: 6px solid white;
+      width: 130px; height: 130px; border-radius: 50%;
+      background: rgba(255,255,255,.1); border: 5px solid white;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
+      transition: border-color .5s, color .5s;
     }
-    .score-ring .num   { font-size: 3rem; font-weight: 800; line-height: 1; }
-    .score-ring .denom { font-size: .85rem; opacity: .7; }
-    .score-msg { font-size: 1.1rem; max-width: 280px; line-height: 1.6; opacity: .9; }
+    .score-ring.big {
+      width: 160px; height: 160px; border-width: 6px;
+    }
+    .score-ring .num   { font-size: 2.6rem; font-weight: 800; line-height: 1; }
+    .score-ring.big .num { font-size: 3.2rem; }
+    .score-ring .denom { font-size: .78rem; opacity: .7; }
+    .score-ring .area-lbl { font-size: .75rem; opacity: .8; margin-top: 3px; text-align: center; }
+    .scores-plus { font-size: 2rem; font-weight: 800; opacity: .5; }
+    .score-msg { font-size: 1rem; max-width: 260px; line-height: 1.6; opacity: .9; }
 
-    .res-body { max-width: 960px; margin: 0 auto; padding: 28px 20px 50px; }
+    .res-body { max-width: 980px; margin: 0 auto; padding: 26px 20px 50px; }
 
     .stats-row {
-      display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 28px;
+      display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 26px;
     }
     .stat-box {
-      background: white; border-radius: 12px; padding: 18px 26px;
-      text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,.07); min-width: 110px;
+      background: white; border-radius: 12px; padding: 16px 22px;
+      text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,.07); min-width: 100px;
     }
-    .stat-box .n { font-size: 2rem; font-weight: 800; }
-    .stat-box .lbl { font-size: .8rem; color: #777; margin-top: 3px; }
+    .stat-box .n { font-size: 1.9rem; font-weight: 800; }
+    .stat-box .lbl { font-size: .78rem; color: #777; margin-top: 3px; }
     .n.g { color: var(--green); } .n.r { color: var(--red); } .n.y { color: var(--yellow); }
+    .n.b { color: var(--blue); }
+
+    /* ── SECTION HEADING ── */
+    .sec-heading {
+      display: flex; align-items: center; gap: 12px;
+      background: var(--blue); color: white;
+      padding: 10px 16px; border-radius: 10px; margin-bottom: 14px;
+    }
+    .sec-heading .sh-icon { font-size: 1.3rem; }
+    .sec-heading .sh-title { font-weight: 700; font-size: 1rem; }
+    .sec-heading .sh-sub { font-size: .8rem; opacity: .75; }
 
     /* ── TOPIC FEEDBACK ── */
     .section-title {
-      font-size: 1.1rem; font-weight: 700; margin-bottom: 14px; color: var(--blue);
+      font-size: 1.05rem; font-weight: 700; margin-bottom: 12px; color: var(--blue);
       display: flex; align-items: center; gap: 8px;
     }
     .section-title::after { content: ''; flex: 1; height: 2px; background: var(--border); }
 
     .topics-grid {
       display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 12px; margin-bottom: 32px;
+      gap: 12px; margin-bottom: 28px;
     }
     .topic-card {
       background: white; border-radius: 12px; padding: 16px 18px;
@@ -208,9 +262,9 @@
     .topic-card.none   { border-color: #ccc; }
 
     .topic-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-    .topic-name { font-weight: 700; font-size: .95rem; }
+    .topic-name { font-weight: 700; font-size: .92rem; }
     .topic-badge {
-      font-size: .78rem; font-weight: 700; padding: 3px 10px;
+      font-size: .75rem; font-weight: 700; padding: 3px 10px;
       border-radius: 20px; color: white;
     }
     .badge-great { background: var(--green); }
@@ -225,31 +279,32 @@
     .fill-needs { background: var(--red); }
     .fill-none  { background: #ccc; }
 
-    .topic-detail { font-size: .82rem; color: #555; line-height: 1.5; }
+    .topic-detail { font-size: .8rem; color: #555; line-height: 1.5; }
     .topic-qs { margin-bottom: 6px; }
     .topic-tip { font-style: italic; color: #777; }
-
-    .topic-pcts { display: flex; justify-content: space-between; font-size: .8rem; color: #777; margin-bottom: 4px; }
+    .topic-pcts { display: flex; justify-content: space-between; font-size: .78rem; color: #777; margin-bottom: 4px; }
 
     /* ── DETAIL GRID ── */
     .detail-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 10px; margin-bottom: 32px;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
+      gap: 10px; margin-bottom: 30px;
     }
     .det-card {
-      background: white; border-radius: 10px; padding: 14px 16px;
+      background: white; border-radius: 10px; padding: 13px 15px;
       box-shadow: 0 2px 8px rgba(0,0,0,.06); border-left: 5px solid;
       display: flex; align-items: center; justify-content: space-between;
     }
     .det-card.ok   { border-color: var(--green); }
     .det-card.err  { border-color: var(--red); }
     .det-card.skip { border-color: #bbb; }
-    .det-q   { font-weight: 700; font-size: .95rem; }
-    .det-sub { font-size: .78rem; color: #888; margin-top: 1px; }
-    .det-ans { font-size: .85rem; margin-top: 4px; }
-    .det-icon { font-size: 1.4rem; margin-left: 10px; flex-shrink: 0; }
+    .det-q   { font-weight: 700; font-size: .92rem; }
+    .det-sub { font-size: .75rem; color: #888; margin-top: 1px; }
+    .det-ans { font-size: .82rem; margin-top: 4px; }
+    .det-icon { font-size: 1.3rem; margin-left: 10px; flex-shrink: 0; }
     .c-ans { color: var(--green); font-weight: 700; }
     .w-ans { color: var(--red); }
+
+    .area-divider { border: none; border-top: 2px solid var(--border); margin: 20px 0 28px; }
 
     .btn-retry {
       display: block; margin: 8px auto 0; padding: 14px 42px;
@@ -265,6 +320,7 @@
       .ans-side  { width: 100%; border-left: none; border-top: 3px solid var(--blue); }
       #timer     { font-size: 1.2rem; padding: 5px 12px; }
       .bar-title span { display: none; }
+      .scores-plus { display: none; }
     }
   </style>
 </head>
@@ -272,100 +328,200 @@
 
 <!-- ════════════════ LANDING ════════════════ -->
 <section id="landing" class="screen active">
-  <div class="brand">📐</div>
-  <h1>Simulacro Matemáticas</h1>
-  <h2>Grado 11° &nbsp;·&nbsp; Cuadernillo 1 de 2022 &nbsp;·&nbsp; Evaluar para Avanzar</h2>
+  <div class="brand">🎓</div>
+  <h1>Simulacro ICFES 11°</h1>
+  <h2>Evaluar para Avanzar &nbsp;·&nbsp; Dos secciones · Puntaje combinado</h2>
+
+  <div class="areas-row">
+    <div class="area-pill">
+      <div class="area-icon">📐</div>
+      <strong>Matemáticas</strong>
+      20 preguntas · 60 min · Cuadernillo 1/2022
+    </div>
+    <div class="area-pill">
+      <div class="area-icon">📖</div>
+      <strong>Lectura Crítica</strong>
+      20 preguntas · 60 min · Cuadernillo 2/2021
+    </div>
+  </div>
 
   <div class="info-row">
-    <div class="info-pill"><strong>20</strong>Preguntas</div>
-    <div class="info-pill"><strong>60</strong>Minutos</div>
+    <div class="info-pill"><strong>40</strong>Preguntas</div>
+    <div class="info-pill"><strong>120</strong>Minutos</div>
     <div class="info-pill"><strong>A – D</strong>Opciones</div>
-    <div class="info-pill"><strong>0 – 100</strong>Calificación</div>
+    <div class="info-pill"><strong>0 – 200</strong>Puntaje total</div>
   </div>
 
   <div class="instructions-box">
     <h3>📋 Antes de empezar</h3>
     <ul>
-      <li>Lee cada pregunta del cuadernillo con atención.</li>
-      <li>Selecciona UNA opción de respuesta (A, B, C o D).</li>
-      <li>Tienes <strong>60 minutos</strong> en total (3 min por pregunta).</li>
-      <li>Al finalizar el tiempo se mostrarán resultados automáticamente.</li>
+      <li>Primero harás Matemáticas (60 min), luego Lectura Crítica (60 min).</li>
+      <li>Cada sección tiene su propio cronómetro de 60 minutos.</li>
+      <li>Al terminar la primera sección podrás descansar antes de continuar.</li>
+      <li>Al finalizar ambas secciones verás tu puntaje de 0 a 200.</li>
       <li>Puedes enviar antes si respondes todas las preguntas.</li>
     </ul>
   </div>
 
-  <button class="btn-start" onclick="initExam()">▶&nbsp;&nbsp;Iniciar Simulacro</button>
+  <button class="btn-start" onclick="startSection('mat')">▶&nbsp;&nbsp;Comenzar Simulacro</button>
 </section>
 
 
 <!-- ════════════════ EXAM ════════════════ -->
 <section id="exam" class="screen">
   <div class="exam-bar">
-    <div class="bar-title">
-      📐 Matemáticas 11°
-      <span>Cuadernillo 1 · 2022</span>
+    <div>
+      <div class="bar-title" id="bar-title">📐 Matemáticas 11°
+        <span id="bar-sublabel">Cuadernillo 1 · 2022</span>
+      </div>
     </div>
-    <div id="timer">60:00</div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <span class="section-badge" id="section-badge">Sección 1 / 2</span>
+      <div id="timer">60:00</div>
+    </div>
     <div class="bar-progress">Respondidas<br><strong id="bar-count">0 / 20</strong></div>
   </div>
   <div id="progress-bar-wrap"><div id="progress-bar-fill"></div></div>
 
   <div class="exam-body">
-    <!-- PDF -->
     <div class="pdf-side">
       <div class="pdf-toolbar">
-        📄 <strong>Cuadernillo de preguntas</strong>
+        📄 <strong id="pdf-toolbar-label">Cuadernillo de preguntas</strong>
         &nbsp;—&nbsp; Usa los controles del visor para navegar.
-        &nbsp;|&nbsp; <a href="pdfs/Cuadernillo-Matematicas-11-1.pdf" target="_blank">Abrir en nueva pestaña ↗</a>
+        &nbsp;|&nbsp; <a id="pdf-new-tab" href="pdfs/Cuadernillo-Matematicas-11-1.pdf" target="_blank">Abrir en nueva pestaña ↗</a>
       </div>
-      <iframe src="pdfs/Cuadernillo-Matematicas-11-1.pdf#toolbar=1&navpanes=0&scrollbar=1&page=2"
-              title="Cuadernillo Matemáticas 11°"></iframe>
+      <iframe id="pdf-frame" src="pdfs/Cuadernillo-Matematicas-11-1.pdf#toolbar=1&navpanes=0&scrollbar=1&page=2"
+              title="Cuadernillo"></iframe>
     </div>
 
-    <!-- Answers -->
     <div class="ans-side">
-      <div class="ans-header">📝 Hoja de Respuestas</div>
+      <div class="ans-header" id="ans-header">📝 Hoja de Respuestas</div>
       <div class="nav-grid" id="nav-grid"></div>
       <div class="ans-list" id="ans-list"></div>
       <div class="ans-footer">
         <p class="answered-label" id="ans-label">0 de 20 respondidas</p>
-        <button class="btn-finish" onclick="tryFinish()">Finalizar y Calificar ✔</button>
+        <button class="btn-finish" onclick="tryFinish()">Finalizar sección ✔</button>
       </div>
     </div>
   </div>
 </section>
 
 
-<!-- ════════════════ RESULTS ════════════════ -->
-<section id="results" class="screen">
-  <div class="res-header">
-    <h1>Resultados del Simulacro</h1>
-    <h2>Matemáticas 11° — Cuadernillo 1 de 2022</h2>
-    <div class="score-wrap">
-      <div class="score-ring" id="score-ring">
-        <span class="num" id="score-num">—</span>
-        <span class="denom">/ 100</span>
-      </div>
-      <p class="score-msg" id="score-msg"></p>
+<!-- ════════════════ TRANSITION ════════════════ -->
+<section id="transition" class="screen">
+  <div class="trans-icon">✅</div>
+  <h1>¡Sección 1 completada!</h1>
+  <h2>Matemáticas finalizada · Ahora comienza Lectura Crítica</h2>
+
+  <div class="trans-score-box">
+    <div class="ts-label">Tu puntaje en Matemáticas</div>
+    <div>
+      <span class="ts-num" id="trans-score">—</span>
+      <span class="ts-denom"> / 100</span>
     </div>
   </div>
 
+  <div class="next-section-box">
+    <h3>📖 Lectura Crítica — Sección 2</h3>
+    <ul>
+      <li>20 preguntas de comprensión lectora.</li>
+      <li>Tienes 60 minutos para esta sección.</li>
+      <li>Textos: ensayos, caricatura, narrativa, divulgación científica.</li>
+      <li>Al terminar verás tu puntaje combinado de 0 a 200.</li>
+    </ul>
+  </div>
+
+  <button class="btn-start" onclick="startSection('lc')">▶&nbsp;&nbsp;Iniciar Lectura Crítica</button>
+</section>
+
+
+<!-- ════════════════ RESULTS ════════════════ -->
+<section id="results" class="screen">
+  <div class="res-header">
+    <h1>Resultados del Simulacro ICFES</h1>
+    <h2>Matemáticas + Lectura Crítica · Grado 11°</h2>
+    <div class="scores-row">
+      <div>
+        <div class="score-ring" id="ring-mat">
+          <span class="num" id="num-mat">—</span>
+          <span class="denom">/ 100</span>
+          <span class="area-lbl">Matemáticas</span>
+        </div>
+      </div>
+      <div class="scores-plus">+</div>
+      <div>
+        <div class="score-ring" id="ring-lc">
+          <span class="num" id="num-lc">—</span>
+          <span class="denom">/ 100</span>
+          <span class="area-lbl">Lectura Crítica</span>
+        </div>
+      </div>
+      <div class="scores-plus">=</div>
+      <div>
+        <div class="score-ring big" id="ring-total">
+          <span class="num" id="num-total">—</span>
+          <span class="denom">/ 200</span>
+          <span class="area-lbl">Puntaje total</span>
+        </div>
+      </div>
+    </div>
+    <p class="score-msg" id="score-msg" style="margin:0 auto;text-align:center"></p>
+  </div>
+
   <div class="res-body">
-    <!-- Stats -->
+    <!-- Combined stats -->
     <div class="stats-row">
-      <div class="stat-box"><div class="n g" id="s-ok">0</div><div class="lbl">Correctas</div></div>
-      <div class="stat-box"><div class="n r" id="s-err">0</div><div class="lbl">Incorrectas</div></div>
-      <div class="stat-box"><div class="n y" id="s-skip">0</div><div class="lbl">Sin responder</div></div>
-      <div class="stat-box"><div class="n"  id="s-time">—</div><div class="lbl">Tiempo usado</div></div>
+      <div class="stat-box"><div class="n g" id="s-ok-total">0</div><div class="lbl">Correctas totales</div></div>
+      <div class="stat-box"><div class="n r" id="s-err-total">0</div><div class="lbl">Incorrectas totales</div></div>
+      <div class="stat-box"><div class="n y" id="s-skip-total">0</div><div class="lbl">Sin responder</div></div>
+      <div class="stat-box"><div class="n b" id="s-time-total">—</div><div class="lbl">Tiempo total</div></div>
     </div>
 
-    <!-- Topic feedback -->
-    <p class="section-title">📊 Retroalimentación por tema</p>
-    <div class="topics-grid" id="topics-grid"></div>
+    <!-- ── MATEMÁTICAS SECTION ── -->
+    <div class="sec-heading">
+      <span class="sh-icon">📐</span>
+      <div>
+        <div class="sh-title">Matemáticas</div>
+        <div class="sh-sub">Cuadernillo 1 · 2022</div>
+      </div>
+    </div>
 
-    <!-- Per-question detail -->
-    <p class="section-title">🔍 Detalle por pregunta</p>
-    <div class="detail-grid" id="detail-grid"></div>
+    <div class="stats-row">
+      <div class="stat-box"><div class="n g" id="s-ok-mat">0</div><div class="lbl">Correctas</div></div>
+      <div class="stat-box"><div class="n r" id="s-err-mat">0</div><div class="lbl">Incorrectas</div></div>
+      <div class="stat-box"><div class="n y" id="s-skip-mat">0</div><div class="lbl">Sin responder</div></div>
+      <div class="stat-box"><div class="n"  id="s-time-mat">—</div><div class="lbl">Tiempo usado</div></div>
+    </div>
+
+    <p class="section-title">📊 Retroalimentación Matemáticas</p>
+    <div class="topics-grid" id="topics-grid-mat"></div>
+
+    <p class="section-title">🔍 Detalle por pregunta — Matemáticas</p>
+    <div class="detail-grid" id="detail-grid-mat"></div>
+
+    <hr class="area-divider">
+
+    <!-- ── LECTURA CRÍTICA SECTION ── -->
+    <div class="sec-heading">
+      <span class="sh-icon">📖</span>
+      <div>
+        <div class="sh-title">Lectura Crítica</div>
+        <div class="sh-sub">Cuadernillo 2 · 2021</div>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-box"><div class="n g" id="s-ok-lc">0</div><div class="lbl">Correctas</div></div>
+      <div class="stat-box"><div class="n r" id="s-err-lc">0</div><div class="lbl">Incorrectas</div></div>
+      <div class="stat-box"><div class="n y" id="s-skip-lc">0</div><div class="lbl">Sin responder</div></div>
+      <div class="stat-box"><div class="n"  id="s-time-lc">—</div><div class="lbl">Tiempo usado</div></div>
+    </div>
+
+    <p class="section-title">📊 Retroalimentación Lectura Crítica</p>
+    <div class="topics-grid" id="topics-grid-lc"></div>
+
+    <p class="section-title">🔍 Detalle por pregunta — Lectura Crítica</p>
+    <div class="detail-grid" id="detail-grid-lc"></div>
 
     <button class="btn-retry" onclick="resetToLanding()">🔄 Intentar de nuevo</button>
   </div>
@@ -374,78 +530,152 @@
 
 <!-- ════════════════ SCRIPT ════════════════ -->
 <script>
-/* ── ANSWER KEY ── */
-const KEY = {
-  1:'D', 2:'B', 3:'A', 4:'A', 5:'C',
-  6:'D', 7:'C', 8:'B', 9:'C', 10:'B',
-  11:'C', 12:'C', 13:'B', 14:'A', 15:'D',
-  16:'B', 17:'B', 18:'B', 19:'C', 20:'C'
+/* ══════════════════════════════════════════
+   DATA
+══════════════════════════════════════════ */
+const SECTIONS = {
+  mat: {
+    key: {
+      1:'D', 2:'B', 3:'A', 4:'A', 5:'C',
+      6:'D', 7:'C', 8:'B', 9:'C', 10:'B',
+      11:'C', 12:'C', 13:'B', 14:'A', 15:'D',
+      16:'B', 17:'B', 18:'B', 19:'C', 20:'C'
+    },
+    total: 20,
+    pdf: 'pdfs/Cuadernillo-Matematicas-11-1.pdf',
+    pdfPage: 2,
+    barTitle: '📐 Matemáticas 11°',
+    barSub: 'Cuadernillo 1 · 2022',
+    badge: 'Sección 1 / 2',
+    ansHeader: '📝 Hoja de Respuestas',
+    pdfLabel: 'Cuadernillo Matemáticas',
+    topics: [
+      {
+        id: 'algebra', name: 'Álgebra y Cálculo', color: '#1a3a6b',
+        questions: [2, 3, 6, 7, 9, 10, 11, 12, 13, 14, 16, 17],
+        subtopics: {
+          2:  'Funciones cuadráticas — gráfica desde ecuación',
+          3:  'Funciones cuadráticas — traslaciones verticales',
+          6:  'Funciones exponenciales — tabla de valores',
+          7:  'Dominio de funciones radicales',
+          9:  'Parábolas — condiciones para determinar su ecuación',
+          10: 'Expresiones con radicales — propiedades',
+          11: 'Ordenar números decimales',
+          12: 'Funciones lineales — propiedades desde gráfica',
+          13: 'Proporcionalidad directa e inversa',
+          14: 'Función lineal desde tabla de datos',
+          16: 'Ecuación lineal en contexto (punto de equilibrio)',
+          17: 'Operaciones con enteros en recta numérica'
+        },
+        tip: 'Refuerza identificación de gráficas de funciones y su correspondencia algebraica.'
+      },
+      {
+        id: 'estadistica', name: 'Estadística y Probabilidad', color: '#8e44ad',
+        questions: [1, 4, 8, 15],
+        subtopics: {
+          1:  'Consolidar datos de gráficas circular y de barras',
+          4:  'Reconocer inconsistencias en tablas de datos',
+          8:  'Probabilidad de eventos con dados',
+          15: 'Conteo — principio multiplicativo (permutaciones)'
+        },
+        tip: 'Practica lectura e interpretación de distintos tipos de gráficas y conteo básico.'
+      },
+      {
+        id: 'geometria', name: 'Geometría', color: '#16a085',
+        questions: [5, 18, 19, 20],
+        subtopics: {
+          5:  'Área de figuras compuestas',
+          18: 'Paralelismo justificado por ángulos rectos',
+          19: 'Cónicas — elipse y circunferencia',
+          20: 'Transformaciones geométricas — orientación'
+        },
+        tip: 'Practica cálculo de áreas, propiedades de ángulos y transformaciones geométricas.'
+      }
+    ]
+  },
+
+  lc: {
+    key: {
+      1:'D', 2:'A', 3:'C', 4:'A', 5:'D',
+      6:'A', 7:'B', 8:'C', 9:'A', 10:'D',
+      11:'A', 12:'A', 13:'C', 14:'D', 15:'B',
+      16:'B', 17:'A', 18:'B', 19:'B', 20:'D'
+    },
+    total: 20,
+    pdf: 'pdfs/Cuadernillo-LecturaCritica-11-2.pdf',
+    pdfPage: 2,
+    barTitle: '📖 Lectura Crítica 11°',
+    barSub: 'Cuadernillo 2 · 2021',
+    badge: 'Sección 2 / 2',
+    ansHeader: '📝 Hoja de Respuestas',
+    pdfLabel: 'Cuadernillo Lectura Crítica',
+    topics: [
+      {
+        id: 'lc-local', name: 'Identificar y entender', color: '#16a085',
+        questions: [8, 9, 14, 16, 19],
+        subtopics: {
+          8:  'Significado de "luz natural" según el contexto (Descartes)',
+          9:  'Paráfrasis del enunciado de Mafalda (Mafalda)',
+          14: 'Lugar donde ocurre la narración (Álvaro Mutis)',
+          16: 'Tiempo en que ocurren los hechos (Álvaro Mutis)',
+          19: 'Significado del cuantificador "alguna" (yagé / W. Davis)'
+        },
+        tip: 'Practica identificar información explícita y el significado de expresiones en contexto.'
+      },
+      {
+        id: 'lc-global', name: 'Comprender la articulación del texto', color: '#1a3a6b',
+        questions: [1, 2, 3, 6, 10, 13, 18, 20],
+        subtopics: {
+          1:  'Relación entre dos enunciados (La Contaminación Marina)',
+          2:  'Inferir la tesis contraria a la principal (La Contaminación Marina)',
+          3:  'Función de un enunciado en el argumento (La Contaminación Marina)',
+          6:  'Función de un enunciado en el argumento (Descartes)',
+          10: 'Relación entre elementos lingüísticos y no lingüísticos (Mafalda)',
+          13: 'Razones que apoyan la tesis del texto (Álvaro Mutis)',
+          18: 'Inferir la conclusión del texto (yagé / W. Davis)',
+          20: 'Función de las partes desde una lectura global (yagé / W. Davis)'
+        },
+        tip: 'Practica identificar cómo se organiza y articula el argumento global de un texto.'
+      },
+      {
+        id: 'lc-reflexion', name: 'Reflexionar y evaluar', color: '#8e44ad',
+        questions: [4, 5, 7, 11, 12, 15, 17],
+        subtopics: {
+          4:  'Reconocer recursos argumentativos (La Contaminación Marina)',
+          5:  'Intención comunicativa de un enunciado (Descartes)',
+          7:  'Por qué la tesis se sostiene sobre los argumentos (Descartes)',
+          11: 'Identificar supuestos implícitos (Mafalda)',
+          12: 'Inferir el propósito comunicativo (Mafalda)',
+          15: 'Reconocer recursos retóricos (Álvaro Mutis)',
+          17: 'Inferir la continuación más adecuada (yagé / W. Davis)'
+        },
+        tip: 'Practica evaluar estrategias discursivas, recursos retóricos y supuestos del texto.'
+      }
+    ]
+  }
 };
 
-/* ── TOPIC METADATA ── */
-const TOPICS = [
-  {
-    id: 'algebra',
-    name: 'Álgebra y Cálculo',
-    color: '#1a3a6b',
-    questions: [2, 3, 6, 7, 9, 10, 11, 12, 13, 14, 16, 17],
-    subtopics: {
-      2:  'Funciones cuadráticas — gráfica desde ecuación',
-      3:  'Funciones cuadráticas — traslaciones verticales',
-      6:  'Funciones exponenciales — tabla de valores',
-      7:  'Dominio de funciones radicales',
-      9:  'Parábolas — condiciones para determinar su ecuación',
-      10: 'Expresiones con radicales — propiedades',
-      11: 'Ordenar números decimales',
-      12: 'Funciones lineales — propiedades desde gráfica',
-      13: 'Proporcionalidad directa e inversa',
-      14: 'Función lineal desde tabla de datos',
-      16: 'Ecuación lineal en contexto (punto de equilibrio)',
-      17: 'Operaciones con enteros en recta numérica'
-    },
-    tip: 'Refuerza identificación de gráficas de funciones y su correspondencia algebraica.'
-  },
-  {
-    id: 'estadistica',
-    name: 'Estadística y Probabilidad',
-    color: '#8e44ad',
-    questions: [1, 4, 8, 15],
-    subtopics: {
-      1:  'Consolidar datos de gráficas circular y de barras',
-      4:  'Reconocer inconsistencias en tablas de datos',
-      8:  'Probabilidad de eventos con dados',
-      15: 'Conteo — principio multiplicativo (permutaciones)'
-    },
-    tip: 'Practica lectura e interpretación de distintos tipos de gráficas y conteo básico.'
-  },
-  {
-    id: 'geometria',
-    name: 'Geometría',
-    color: '#16a085',
-    questions: [5, 18, 19, 20],
-    subtopics: {
-      5:  'Área de figuras compuestas',
-      18: 'Paralelismo justificado por ángulos rectos',
-      19: 'Cónicas — elipse y circunferencia',
-      20: 'Transformaciones geométricas — orientación'
-    },
-    tip: 'Practica cálculo de áreas, propiedades de ángulos y transformaciones geométricas.'
-  }
-];
-
-const TOTAL      = 20;
 const SECS_TOTAL = 60 * 60;
 
-/* ── STATE ── */
-let answers  = {};
-let secsLeft = SECS_TOTAL;
-let startTs  = null;
-let interval = null;
-let done     = false;
+/* ══════════════════════════════════════════
+   STATE
+══════════════════════════════════════════ */
+let currentSection = 'mat';
+let answers        = {};       // answers for current section
+let matAnswers     = {};
+let lcAnswers      = {};
+let matElapsed     = 0;
+let lcElapsed      = 0;
+let secsLeft       = SECS_TOTAL;
+let startTs        = null;
+let interval       = null;
+let examDone       = false;
 
-/* ── SCREEN ── */
+/* ══════════════════════════════════════════
+   SCREEN
+══════════════════════════════════════════ */
 function show(id) {
-  ['landing','exam','results'].forEach(s => {
+  ['landing','exam','transition','results'].forEach(s => {
     const el = document.getElementById(s);
     el.classList.remove('active');
     el.style.display = 'none';
@@ -455,15 +685,31 @@ function show(id) {
   el.classList.add('active');
 }
 
-/* ── INIT ── */
-function initExam() {
+/* ══════════════════════════════════════════
+   START A SECTION
+══════════════════════════════════════════ */
+function startSection(sec) {
+  currentSection = sec;
+  const cfg = SECTIONS[sec];
   answers  = {};
   secsLeft = SECS_TOTAL;
-  done     = false;
+  examDone = false;
   startTs  = Date.now();
-  buildAnswerSheet();
-  buildNavGrid();
-  updateProgress();
+
+  // Update exam UI for this section
+  document.getElementById('bar-title').innerHTML =
+    cfg.barTitle + `<span id="bar-sublabel">${cfg.barSub}</span>`;
+  document.getElementById('section-badge').textContent = cfg.badge;
+  document.getElementById('pdf-toolbar-label').textContent = cfg.pdfLabel;
+  const pdfLink = cfg.pdf;
+  document.getElementById('pdf-new-tab').href = pdfLink;
+  document.getElementById('pdf-frame').src =
+    `${cfg.pdf}#toolbar=1&navpanes=0&scrollbar=1&page=${cfg.pdfPage}`;
+  document.getElementById('ans-header').textContent = cfg.ansHeader;
+
+  buildAnswerSheet(sec);
+  buildNavGrid(sec);
+  updateProgress(sec);
   updateTimer();
   clearInterval(interval);
   interval = setInterval(() => {
@@ -474,11 +720,14 @@ function initExam() {
   show('exam');
 }
 
-/* ── BUILD SHEET ── */
-function buildAnswerSheet() {
+/* ══════════════════════════════════════════
+   BUILD SHEET & NAV
+══════════════════════════════════════════ */
+function buildAnswerSheet(sec) {
+  const cfg  = SECTIONS[sec];
   const list = document.getElementById('ans-list');
   list.innerHTML = '';
-  for (let q = 1; q <= TOTAL; q++) {
+  for (let q = 1; q <= cfg.total; q++) {
     list.insertAdjacentHTML('beforeend', `
       <div class="q-row" id="qrow-${q}">
         <div class="q-label">
@@ -494,142 +743,213 @@ function buildAnswerSheet() {
   }
 }
 
-function buildNavGrid() {
-  const g = document.getElementById('nav-grid');
+function buildNavGrid(sec) {
+  const cfg = SECTIONS[sec];
+  const g   = document.getElementById('nav-grid');
   g.innerHTML = '';
-  for (let q = 1; q <= TOTAL; q++) {
+  for (let q = 1; q <= cfg.total; q++) {
     g.insertAdjacentHTML('beforeend',
       `<button class="nav-btn" id="nav-${q}" onclick="scrollToQ(${q})">${q}</button>`);
   }
 }
 
-/* ── PICK ── */
+/* ══════════════════════════════════════════
+   PICK
+══════════════════════════════════════════ */
 function pick(q, opt) {
-  if (done) return;
+  if (examDone) return;
+  const cfg = SECTIONS[currentSection];
   ['A','B','C','D'].forEach(o => document.getElementById(`opt-${q}-${o}`).classList.remove('sel'));
   document.getElementById(`opt-${q}-${opt}`).classList.add('sel');
   answers[q] = opt;
   document.getElementById(`qrow-${q}`).classList.add('done');
   document.getElementById(`qchk-${q}`).textContent = '✔';
   document.getElementById(`nav-${q}`).classList.add('done');
-  updateProgress();
+  updateProgress(currentSection);
 }
 
 function scrollToQ(q) {
   document.getElementById(`qrow-${q}`)?.scrollIntoView({ behavior:'smooth', block:'center' });
 }
 
-/* ── PROGRESS ── */
-function updateProgress() {
-  const n = Object.keys(answers).length;
-  document.getElementById('bar-count').textContent = `${n} / ${TOTAL}`;
-  document.getElementById('ans-label').textContent = `${n} de ${TOTAL} respondidas`;
-  document.getElementById('progress-bar-fill').style.width = `${(n/TOTAL)*100}%`;
+/* ══════════════════════════════════════════
+   PROGRESS
+══════════════════════════════════════════ */
+function updateProgress(sec) {
+  const cfg  = SECTIONS[sec];
+  const n    = Object.keys(answers).length;
+  document.getElementById('bar-count').textContent = `${n} / ${cfg.total}`;
+  document.getElementById('ans-label').textContent = `${n} de ${cfg.total} respondidas`;
+  document.getElementById('progress-bar-fill').style.width = `${(n / cfg.total) * 100}%`;
 }
 
-/* ── TIMER ── */
+/* ══════════════════════════════════════════
+   TIMER
+══════════════════════════════════════════ */
 function updateTimer() {
-  const m = Math.floor(secsLeft / 60);
-  const s = secsLeft % 60;
+  const m  = Math.floor(secsLeft / 60);
+  const s  = secsLeft % 60;
   const el = document.getElementById('timer');
   el.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-  el.className = secsLeft <= 60 ? 'danger' : secsLeft <= 300 ? 'warn' : '';
+  el.className   = secsLeft <= 60 ? 'danger' : secsLeft <= 300 ? 'warn' : '';
 }
 
-/* ── FINISH ── */
+/* ══════════════════════════════════════════
+   FINISH
+══════════════════════════════════════════ */
 function tryFinish() {
-  const missing = TOTAL - Object.keys(answers).length;
+  const cfg     = SECTIONS[currentSection];
+  const missing = cfg.total - Object.keys(answers).length;
   const msg = missing > 0
-    ? `Tienes ${missing} pregunta(s) sin responder.\n¿Deseas finalizar de todas formas?`
-    : '¿Deseas finalizar y ver tus resultados?';
-  if (confirm(msg)) finish();
+    ? `Tienes ${missing} pregunta(s) sin responder.\n¿Deseas finalizar la sección de todas formas?`
+    : '¿Deseas finalizar esta sección y ver el resumen?';
+  if (confirm(msg)) finishSection();
 }
 
 function autoFinish() {
   clearInterval(interval);
-  done = true;
-  alert('⏰ ¡El tiempo ha terminado! Se mostrarán tus resultados.');
-  showResults();
+  examDone = true;
+  alert('⏰ ¡El tiempo ha terminado! Pasando a la siguiente pantalla.');
+  finishSection();
 }
 
-function finish() {
+function finishSection() {
   clearInterval(interval);
-  done = true;
-  showResults();
+  examDone = true;
+  const elapsed = SECS_TOTAL - secsLeft;
+
+  if (currentSection === 'mat') {
+    matAnswers = { ...answers };
+    matElapsed = elapsed;
+    // Compute mat score for transition screen
+    const cfg = SECTIONS.mat;
+    let ok = 0;
+    for (let q = 1; q <= cfg.total; q++) {
+      if (answers[q] && answers[q] === cfg.key[q]) ok++;
+    }
+    const matScore = Math.round((ok / cfg.total) * 100);
+    document.getElementById('trans-score').textContent = matScore;
+    show('transition');
+  } else {
+    lcAnswers = { ...answers };
+    lcElapsed = elapsed;
+    showResults();
+  }
 }
 
-/* ── RESULTS ── */
+/* ══════════════════════════════════════════
+   RESULTS
+══════════════════════════════════════════ */
 function showResults() {
-  const elapsed = SECS_TOTAL - secsLeft;
-  const em = Math.floor(elapsed / 60), es = elapsed % 60;
+  const matCfg = SECTIONS.mat;
+  const lcCfg  = SECTIONS.lc;
 
-  let ok = 0, err = 0, skip = 0;
-  for (let q = 1; q <= TOTAL; q++) {
-    const a = answers[q];
-    if (!a) skip++; else if (a === KEY[q]) ok++; else err++;
+  // Score calculation
+  let matOk = 0, matErr = 0, matSkip = 0;
+  for (let q = 1; q <= matCfg.total; q++) {
+    const a = matAnswers[q];
+    if (!a) matSkip++; else if (a === matCfg.key[q]) matOk++; else matErr++;
   }
-  const score = Math.round((ok / TOTAL) * 100);
+  let lcOk = 0, lcErr = 0, lcSkip = 0;
+  for (let q = 1; q <= lcCfg.total; q++) {
+    const a = lcAnswers[q];
+    if (!a) lcSkip++; else if (a === lcCfg.key[q]) lcOk++; else lcErr++;
+  }
 
-  /* Score ring */
-  document.getElementById('score-num').textContent = score;
-  const ring = document.getElementById('score-ring');
-  const ringColor = score >= 70 ? '#27ae60' : score >= 50 ? '#f39c12' : '#e74c3c';
-  ring.style.borderColor = ringColor;
-  ring.style.color       = ringColor;
+  const matScore   = Math.round((matOk / matCfg.total) * 100);
+  const lcScore    = Math.round((lcOk / lcCfg.total) * 100);
+  const totalScore = matScore + lcScore;
 
-  /* Message */
-  const msgMap = [
-    [90, '¡Excelente resultado! Dominas muy bien los temas. 🏆'],
-    [70, '¡Buen trabajo! Sigue repasando los temas con más dificultad. 👍'],
-    [50, 'Resultado regular. Revisa las preguntas incorrectas con calma. 📚'],
-    [0,  'Necesitas reforzar los temas evaluados. ¡No te rindas, sigue practicando! 💪']
+  // Score rings
+  const ringColor = pct => pct >= 70 ? '#27ae60' : pct >= 50 ? '#f39c12' : '#e74c3c';
+  setRing('ring-mat',   'num-mat',   matScore,   100, ringColor(matScore));
+  setRing('ring-lc',    'num-lc',    lcScore,    100, ringColor(lcScore));
+  setRing('ring-total', 'num-total', totalScore, 200,
+    totalScore >= 140 ? '#27ae60' : totalScore >= 100 ? '#f39c12' : '#e74c3c');
+
+  // Global message
+  const msgs = [
+    [180, '¡Resultado sobresaliente! Dominas ambas áreas con maestría. 🏆'],
+    [140, '¡Muy buen desempeño! Sigue repasando algunos temas. 👍'],
+    [100, 'Resultado aceptable. Refuerza los temas con más dificultad. 📚'],
+    [0,   'Necesitas reforzar las dos áreas. ¡No te rindas, sigue practicando! 💪']
   ];
   document.getElementById('score-msg').textContent =
-    msgMap.find(([min]) => score >= min)[1];
+    msgs.find(([min]) => totalScore >= min)[1];
 
-  /* Stats */
-  document.getElementById('s-ok').textContent   = ok;
-  document.getElementById('s-err').textContent  = err;
-  document.getElementById('s-skip').textContent = skip;
-  document.getElementById('s-time').textContent =
-    `${String(em).padStart(2,'0')}:${String(es).padStart(2,'0')}`;
+  // Time formatting
+  const fmtTime = s => {
+    const m = Math.floor(s / 60), sec = s % 60;
+    return `${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+  };
+  const totalElapsed = matElapsed + lcElapsed;
 
-  /* ── TOPIC FEEDBACK ── */
-  const topicsGrid = document.getElementById('topics-grid');
-  topicsGrid.innerHTML = '';
+  // Combined stats
+  document.getElementById('s-ok-total').textContent   = matOk + lcOk;
+  document.getElementById('s-err-total').textContent  = matErr + lcErr;
+  document.getElementById('s-skip-total').textContent = matSkip + lcSkip;
+  document.getElementById('s-time-total').textContent = fmtTime(totalElapsed);
 
-  TOPICS.forEach(topic => {
+  // Mat stats
+  document.getElementById('s-ok-mat').textContent   = matOk;
+  document.getElementById('s-err-mat').textContent  = matErr;
+  document.getElementById('s-skip-mat').textContent = matSkip;
+  document.getElementById('s-time-mat').textContent = fmtTime(matElapsed);
+
+  // LC stats
+  document.getElementById('s-ok-lc').textContent   = lcOk;
+  document.getElementById('s-err-lc').textContent  = lcErr;
+  document.getElementById('s-skip-lc').textContent = lcSkip;
+  document.getElementById('s-time-lc').textContent = fmtTime(lcElapsed);
+
+  // Topic feedback
+  buildTopicFeedback('topics-grid-mat', matCfg.topics, matCfg.key, matAnswers);
+  buildTopicFeedback('topics-grid-lc',  lcCfg.topics,  lcCfg.key,  lcAnswers);
+
+  // Detail grids
+  buildDetailGrid('detail-grid-mat', matCfg, matAnswers);
+  buildDetailGrid('detail-grid-lc',  lcCfg,  lcAnswers);
+
+  show('results');
+}
+
+function setRing(ringId, numId, score, max, color) {
+  document.getElementById(numId).textContent   = score;
+  const ring = document.getElementById(ringId);
+  ring.style.borderColor = color;
+  ring.style.color       = color;
+}
+
+/* ── TOPIC FEEDBACK ── */
+function buildTopicFeedback(gridId, topics, key, ans) {
+  const grid = document.getElementById(gridId);
+  grid.innerHTML = '';
+
+  topics.forEach(topic => {
     const qs = topic.questions;
     let tOk = 0, tErr = 0, tSkip = 0;
     qs.forEach(q => {
-      const a = answers[q];
-      if (!a) tSkip++; else if (a === KEY[q]) tOk++; else tErr++;
+      const a = ans[q];
+      if (!a) tSkip++; else if (a === key[q]) tOk++; else tErr++;
     });
     const answered = tOk + tErr;
     const pct = answered > 0 ? Math.round((tOk / qs.length) * 100) : null;
 
-    let level, badgeClass, fillClass, emoji;
-    if (pct === null)    { level = 'Sin datos'; badgeClass = 'badge-none'; fillClass = 'fill-none'; emoji = '⬜'; }
-    else if (pct >= 75)  { level = 'Dominado';  badgeClass = 'badge-great'; fillClass = 'fill-great'; emoji = '✅'; }
-    else if (pct >= 50)  { level = 'Aceptable'; badgeClass = 'badge-good';  fillClass = 'fill-good';  emoji = '🟡'; }
-    else                 { level = 'A reforzar'; badgeClass = 'badge-needs'; fillClass = 'fill-needs'; emoji = '🔴'; }
+    let level, badgeClass, fillClass, emoji, cardClass;
+    if (pct === null)   { level = 'Sin datos';  badgeClass = 'badge-none';  fillClass = 'fill-none';  emoji = '⬜'; cardClass = 'none'; }
+    else if (pct >= 75) { level = 'Dominado';   badgeClass = 'badge-great'; fillClass = 'fill-great'; emoji = '✅'; cardClass = 'great'; }
+    else if (pct >= 50) { level = 'Aceptable';  badgeClass = 'badge-good';  fillClass = 'fill-good';  emoji = '🟡'; cardClass = 'good'; }
+    else                { level = 'A reforzar'; badgeClass = 'badge-needs'; fillClass = 'fill-needs'; emoji = '🔴'; cardClass = 'needs'; }
 
-    const cardClass = pct === null ? 'none' : pct >= 75 ? 'great' : pct >= 50 ? 'good' : 'needs';
-    const barWidth  = pct !== null ? pct : 0;
-
-    // Build subtopic list
     const subList = qs.map(q => {
-      const a   = answers[q];
-      const isOk   = a && a === KEY[q];
-      const isSkip = !a;
-      const ic = isOk ? '✅' : isSkip ? '⬜' : '❌';
+      const a = ans[q];
+      const ic = (!a) ? '⬜' : (a === key[q]) ? '✅' : '❌';
       return `<div style="display:flex;gap:6px;align-items:flex-start;margin:2px 0">
-        <span>${ic}</span>
-        <span><b>P${q}:</b> ${topic.subtopics[q]}</span>
+        <span>${ic}</span><span><b>P${q}:</b> ${topic.subtopics[q]}</span>
       </div>`;
     }).join('');
 
-    topicsGrid.insertAdjacentHTML('beforeend', `
+    grid.insertAdjacentHTML('beforeend', `
       <div class="topic-card ${cardClass}">
         <div class="topic-header">
           <span class="topic-name">${emoji} ${topic.name}</span>
@@ -640,7 +960,7 @@ function showResults() {
           <span>${pct !== null ? pct + '%' : '—'}</span>
         </div>
         <div class="topic-bar-wrap">
-          <div class="topic-bar-fill ${fillClass}" style="width:${barWidth}%"></div>
+          <div class="topic-bar-fill ${fillClass}" style="width:${pct !== null ? pct : 0}%"></div>
         </div>
         <div class="topic-detail">
           <div class="topic-qs">${subList}</div>
@@ -648,27 +968,28 @@ function showResults() {
         </div>
       </div>`);
   });
+}
 
-  /* ── DETAIL GRID ── */
-  const grid = document.getElementById('detail-grid');
+/* ── DETAIL GRID ── */
+function buildDetailGrid(gridId, cfg, ans) {
+  const grid = document.getElementById(gridId);
   grid.innerHTML = '';
 
-  // Find topic name for each question
   const qTopic = {};
-  TOPICS.forEach(t => t.questions.forEach(q => qTopic[q] = t.name));
+  cfg.topics.forEach(t => t.questions.forEach(q => qTopic[q] = t.name));
 
-  for (let q = 1; q <= TOTAL; q++) {
-    const a   = answers[q];
-    const k   = KEY[q];
+  for (let q = 1; q <= cfg.total; q++) {
+    const a      = ans[q];
+    const k      = cfg.key[q];
     const isOk   = a && a === k;
     const isSkip = !a;
-    const cls  = isOk ? 'ok' : isSkip ? 'skip' : 'err';
-    const icon = isOk ? '✅' : isSkip ? '⬜' : '❌';
+    const cls    = isOk ? 'ok' : isSkip ? 'skip' : 'err';
+    const icon   = isOk ? '✅' : isSkip ? '⬜' : '❌';
 
     let ansHtml;
-    if (isSkip)      ansHtml = `<span style="color:#999">Sin responder</span> &nbsp;·&nbsp; Correcta: <span class="c-ans">${k}</span>`;
-    else if (isOk)   ansHtml = `Tu respuesta: <span class="c-ans">${a}</span> ✓`;
-    else             ansHtml = `Tu respuesta: <span class="w-ans">${a}</span> &nbsp;·&nbsp; Correcta: <span class="c-ans">${k}</span>`;
+    if (isSkip)    ansHtml = `<span style="color:#999">Sin responder</span> · Correcta: <span class="c-ans">${k}</span>`;
+    else if (isOk) ansHtml = `Tu respuesta: <span class="c-ans">${a}</span> ✓`;
+    else           ansHtml = `Tu respuesta: <span class="w-ans">${a}</span> · Correcta: <span class="c-ans">${k}</span>`;
 
     grid.insertAdjacentHTML('beforeend', `
       <div class="det-card ${cls}">
@@ -680,14 +1001,16 @@ function showResults() {
         <span class="det-icon">${icon}</span>
       </div>`);
   }
-
-  show('results');
 }
 
-/* ── RESET ── */
+/* ══════════════════════════════════════════
+   RESET
+══════════════════════════════════════════ */
 function resetToLanding() {
   clearInterval(interval);
-  done = false;
+  matAnswers = {}; lcAnswers = {};
+  matElapsed = 0; lcElapsed = 0;
+  examDone   = false;
   show('landing');
 }
 </script>
