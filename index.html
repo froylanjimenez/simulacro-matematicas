@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simulacro Matemáticas 11° | Evaluar para Avanzar 2022</title>
+  <style>
+    :root {
+      --blue:   #1a3a6b;
+      --orange: #e8640c;
+      --green:  #27ae60;
+      --red:    #e74c3c;
+      --yellow: #f39c12;
+      --purple: #8e44ad;
+      --teal:   #16a085;
+      --bg:     #f0f2f5;
+      --white:  #ffffff;
+      --border: #d0d7e3;
+      --text:   #2c3e50;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); color: var(--text); }
+
+    /* ── SCREENS ── */
+    .screen { display: none; }
+    #landing.active { display: flex; flex-direction: column; min-height: 100vh; align-items: center; justify-content: center; }
+    #exam.active    { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+    #results.active { display: flex; flex-direction: column; min-height: 100vh; }
+
+    /* ── LANDING ── */
+    #landing {
+      background: linear-gradient(145deg, #0e2a52 0%, #1a6191 60%, #0e7d8a 100%);
+      color: var(--white); text-align: center; padding: 40px 24px;
+    }
+    .brand { font-size: 3.5rem; margin-bottom: 8px; }
+    #landing h1 { font-size: 2.2rem; font-weight: 800; letter-spacing: -.5px; }
+    #landing h2 { font-size: 1.1rem; font-weight: 400; opacity: .85; margin: 8px 0 28px; }
+
+    .info-row { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin: 0 0 28px; }
+    .info-pill {
+      background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.3);
+      border-radius: 50px; padding: 10px 22px; font-size: .95rem;
+    }
+    .info-pill strong { font-size: 1.4rem; display: block; }
+
+    .instructions-box {
+      background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.25);
+      border-radius: 14px; padding: 20px 28px; max-width: 520px;
+      text-align: left; margin: 0 auto 32px;
+    }
+    .instructions-box h3 { font-size: 1rem; margin-bottom: 12px; opacity: .9; }
+    .instructions-box li { list-style: none; padding: 5px 0 5px 22px; position: relative; font-size: .93rem; opacity: .9; }
+    .instructions-box li::before { content: '→'; position: absolute; left: 0; color: #7dd3fc; font-weight: bold; }
+
+    .btn-start {
+      background: var(--orange); color: white; border: none;
+      padding: 18px 52px; font-size: 1.15rem; font-weight: 700;
+      border-radius: 50px; cursor: pointer; transition: all .25s;
+      letter-spacing: .4px; box-shadow: 0 6px 24px rgba(0,0,0,.3);
+    }
+    .btn-start:hover { background: #bf530a; transform: translateY(-2px); }
+
+    /* ── EXAM BAR ── */
+    .exam-bar {
+      background: var(--blue); color: white; padding: 10px 18px;
+      display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-shrink: 0;
+    }
+    .bar-title { font-weight: 700; font-size: 1rem; }
+    .bar-title span { opacity: .7; font-weight: 400; font-size: .85rem; display: block; }
+
+    #timer {
+      font-family: 'Courier New', monospace; font-size: 1.6rem; font-weight: 700;
+      letter-spacing: 3px; background: rgba(255,255,255,.15);
+      padding: 6px 18px; border-radius: 30px; transition: background .5s;
+    }
+    #timer.warn   { background: rgba(243,156,18,.45); }
+    #timer.danger { background: rgba(231,76,60,.55); animation: blink .9s infinite; }
+    @keyframes blink { 50% { opacity: .6; } }
+
+    .bar-progress { font-size: .9rem; opacity: .85; text-align: right; }
+    .bar-progress strong { font-size: 1.1rem; }
+
+    #progress-bar-wrap { height: 4px; background: rgba(255,255,255,.2); flex-shrink: 0; }
+    #progress-bar-fill { height: 100%; background: var(--orange); width: 0%; transition: width .3s; }
+
+    /* ── EXAM BODY ── */
+    .exam-body { display: flex; flex: 1; overflow: hidden; }
+
+    .pdf-side { flex: 1; display: flex; flex-direction: column; background: #525659; min-width: 0; }
+    .pdf-toolbar {
+      background: #3c3f41; color: #ccc; padding: 8px 14px;
+      font-size: .82rem; display: flex; align-items: center; gap: 10px; flex-shrink: 0;
+    }
+    .pdf-toolbar a { color: #7dd3fc; text-decoration: none; }
+    .pdf-toolbar a:hover { text-decoration: underline; }
+    .pdf-side iframe { flex: 1; border: none; }
+
+    /* ── ANSWER SIDE ── */
+    .ans-side {
+      width: 290px; background: var(--white);
+      border-left: 3px solid var(--blue);
+      display: flex; flex-direction: column; flex-shrink: 0;
+    }
+    .ans-header {
+      background: var(--blue); color: white;
+      padding: 12px 14px; font-weight: 700; font-size: 1rem;
+      text-align: center; flex-shrink: 0;
+    }
+
+    .nav-grid {
+      display: grid; grid-template-columns: repeat(5, 1fr);
+      gap: 4px; padding: 10px; border-bottom: 2px solid var(--border); flex-shrink: 0;
+    }
+    .nav-btn {
+      border: 2px solid var(--border); background: white; border-radius: 6px;
+      padding: 5px 0; font-size: .8rem; font-weight: 700;
+      cursor: pointer; color: #888; transition: all .15s; text-align: center;
+    }
+    .nav-btn:hover { border-color: var(--blue); color: var(--blue); }
+    .nav-btn.done  { background: var(--blue); border-color: var(--blue); color: white; }
+
+    .ans-list { flex: 1; overflow-y: auto; padding: 8px; }
+
+    .q-row {
+      border: 2px solid var(--border); border-radius: 8px;
+      margin-bottom: 6px; overflow: hidden; transition: border-color .2s, background .2s;
+    }
+    .q-row.done { border-color: var(--blue); background: #eef2fc; }
+
+    .q-label {
+      background: #e8edf5; padding: 5px 10px;
+      font-size: .8rem; font-weight: 700; color: var(--blue);
+      display: flex; justify-content: space-between;
+    }
+    .q-row.done .q-label { background: var(--blue); color: white; }
+
+    .opts { display: flex; gap: 4px; padding: 6px; }
+    .opt {
+      flex: 1; border: 2px solid #d5dce8; background: white; border-radius: 6px;
+      cursor: pointer; padding: 7px 0; font-size: .9rem; font-weight: 700;
+      color: #555; text-align: center; transition: all .15s;
+    }
+    .opt:hover { border-color: var(--blue); color: var(--blue); background: #e8f0fe; }
+    .opt.sel   { background: var(--blue); border-color: var(--blue); color: white; }
+
+    .ans-footer { padding: 12px; border-top: 2px solid var(--border); flex-shrink: 0; }
+    .answered-label { text-align: center; font-size: .85rem; color: #666; margin-bottom: 8px; }
+    .btn-finish {
+      width: 100%; padding: 13px; background: var(--orange); color: white;
+      border: none; border-radius: 8px; font-size: 1.05rem; font-weight: 700;
+      cursor: pointer; transition: background .2s;
+    }
+    .btn-finish:hover { background: #bf530a; }
+
+    /* ── RESULTS ── */
+    #results { background: var(--bg); }
+    .res-header {
+      background: linear-gradient(135deg, var(--blue) 0%, #1a6191 100%);
+      color: white; padding: 36px 24px; text-align: center;
+    }
+    .res-header h1 { font-size: 1.8rem; }
+    .res-header h2 { font-size: .95rem; opacity: .8; margin-top: 4px; font-weight: 400; }
+
+    .score-wrap {
+      display: flex; align-items: center; justify-content: center;
+      margin: 24px 0 8px; gap: 24px; flex-wrap: wrap;
+    }
+    .score-ring {
+      width: 140px; height: 140px; border-radius: 50%;
+      background: rgba(255,255,255,.12); border: 6px solid white;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .score-ring .num   { font-size: 3rem; font-weight: 800; line-height: 1; }
+    .score-ring .denom { font-size: .85rem; opacity: .7; }
+    .score-msg { font-size: 1.1rem; max-width: 280px; line-height: 1.6; opacity: .9; }
+
+    .res-body { max-width: 960px; margin: 0 auto; padding: 28px 20px 50px; }
+
+    .stats-row {
+      display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 28px;
+    }
+    .stat-box {
+      background: white; border-radius: 12px; padding: 18px 26px;
+      text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,.07); min-width: 110px;
+    }
+    .stat-box .n { font-size: 2rem; font-weight: 800; }
+    .stat-box .lbl { font-size: .8rem; color: #777; margin-top: 3px; }
+    .n.g { color: var(--green); } .n.r { color: var(--red); } .n.y { color: var(--yellow); }
+
+    /* ── TOPIC FEEDBACK ── */
+    .section-title {
+      font-size: 1.1rem; font-weight: 700; margin-bottom: 14px; color: var(--blue);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .section-title::after { content: ''; flex: 1; height: 2px; background: var(--border); }
+
+    .topics-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 12px; margin-bottom: 32px;
+    }
+    .topic-card {
+      background: white; border-radius: 12px; padding: 16px 18px;
+      box-shadow: 0 2px 10px rgba(0,0,0,.07); border-top: 4px solid;
+    }
+    .topic-card.great  { border-color: var(--green); }
+    .topic-card.good   { border-color: var(--yellow); }
+    .topic-card.needs  { border-color: var(--red); }
+    .topic-card.none   { border-color: #ccc; }
+
+    .topic-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+    .topic-name { font-weight: 700; font-size: .95rem; }
+    .topic-badge {
+      font-size: .78rem; font-weight: 700; padding: 3px 10px;
+      border-radius: 20px; color: white;
+    }
+    .badge-great { background: var(--green); }
+    .badge-good  { background: var(--yellow); }
+    .badge-needs { background: var(--red); }
+    .badge-none  { background: #aaa; }
+
+    .topic-bar-wrap { background: #e8edf5; border-radius: 20px; height: 8px; margin-bottom: 8px; }
+    .topic-bar-fill { height: 100%; border-radius: 20px; transition: width .6s; }
+    .fill-great { background: var(--green); }
+    .fill-good  { background: var(--yellow); }
+    .fill-needs { background: var(--red); }
+    .fill-none  { background: #ccc; }
+
+    .topic-detail { font-size: .82rem; color: #555; line-height: 1.5; }
+    .topic-qs { margin-bottom: 6px; }
+    .topic-tip { font-style: italic; color: #777; }
+
+    .topic-pcts { display: flex; justify-content: space-between; font-size: .8rem; color: #777; margin-bottom: 4px; }
+
+    /* ── DETAIL GRID ── */
+    .detail-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 10px; margin-bottom: 32px;
+    }
+    .det-card {
+      background: white; border-radius: 10px; padding: 14px 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.06); border-left: 5px solid;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .det-card.ok   { border-color: var(--green); }
+    .det-card.err  { border-color: var(--red); }
+    .det-card.skip { border-color: #bbb; }
+    .det-q   { font-weight: 700; font-size: .95rem; }
+    .det-sub { font-size: .78rem; color: #888; margin-top: 1px; }
+    .det-ans { font-size: .85rem; margin-top: 4px; }
+    .det-icon { font-size: 1.4rem; margin-left: 10px; flex-shrink: 0; }
+    .c-ans { color: var(--green); font-weight: 700; }
+    .w-ans { color: var(--red); }
+
+    .btn-retry {
+      display: block; margin: 8px auto 0; padding: 14px 42px;
+      background: var(--blue); color: white; border: none; border-radius: 50px;
+      font-size: 1.05rem; font-weight: 700; cursor: pointer; transition: all .2s;
+    }
+    .btn-retry:hover { background: #0f2547; transform: translateY(-1px); }
+
+    /* ── MOBILE ── */
+    @media (max-width: 640px) {
+      .exam-body { flex-direction: column; }
+      .pdf-side  { min-height: 50vh; }
+      .ans-side  { width: 100%; border-left: none; border-top: 3px solid var(--blue); }
+      #timer     { font-size: 1.2rem; padding: 5px 12px; }
+      .bar-title span { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════ LANDING ════════════════ -->
+<section id="landing" class="screen active">
+  <div class="brand">📐</div>
+  <h1>Simulacro Matemáticas</h1>
+  <h2>Grado 11° &nbsp;·&nbsp; Cuadernillo 1 de 2022 &nbsp;·&nbsp; Evaluar para Avanzar</h2>
+
+  <div class="info-row">
+    <div class="info-pill"><strong>20</strong>Preguntas</div>
+    <div class="info-pill"><strong>60</strong>Minutos</div>
+    <div class="info-pill"><strong>A – D</strong>Opciones</div>
+    <div class="info-pill"><strong>0 – 100</strong>Calificación</div>
+  </div>
+
+  <div class="instructions-box">
+    <h3>📋 Antes de empezar</h3>
+    <ul>
+      <li>Lee cada pregunta del cuadernillo con atención.</li>
+      <li>Selecciona UNA opción de respuesta (A, B, C o D).</li>
+      <li>Tienes <strong>60 minutos</strong> en total (3 min por pregunta).</li>
+      <li>Al finalizar el tiempo se mostrarán resultados automáticamente.</li>
+      <li>Puedes enviar antes si respondes todas las preguntas.</li>
+    </ul>
+  </div>
+
+  <button class="btn-start" onclick="initExam()">▶&nbsp;&nbsp;Iniciar Simulacro</button>
+</section>
+
+
+<!-- ════════════════ EXAM ════════════════ -->
+<section id="exam" class="screen">
+  <div class="exam-bar">
+    <div class="bar-title">
+      📐 Matemáticas 11°
+      <span>Cuadernillo 1 · 2022</span>
+    </div>
+    <div id="timer">60:00</div>
+    <div class="bar-progress">Respondidas<br><strong id="bar-count">0 / 20</strong></div>
+  </div>
+  <div id="progress-bar-wrap"><div id="progress-bar-fill"></div></div>
+
+  <div class="exam-body">
+    <!-- PDF -->
+    <div class="pdf-side">
+      <div class="pdf-toolbar">
+        📄 <strong>Cuadernillo de preguntas</strong>
+        &nbsp;—&nbsp; Usa los controles del visor para navegar.
+        &nbsp;|&nbsp; <a href="pdfs/Cuadernillo-Matematicas-11-1.pdf" target="_blank">Abrir en nueva pestaña ↗</a>
+      </div>
+      <iframe src="pdfs/Cuadernillo-Matematicas-11-1.pdf#toolbar=1&navpanes=0&scrollbar=1&page=2"
+              title="Cuadernillo Matemáticas 11°"></iframe>
+    </div>
+
+    <!-- Answers -->
+    <div class="ans-side">
+      <div class="ans-header">📝 Hoja de Respuestas</div>
+      <div class="nav-grid" id="nav-grid"></div>
+      <div class="ans-list" id="ans-list"></div>
+      <div class="ans-footer">
+        <p class="answered-label" id="ans-label">0 de 20 respondidas</p>
+        <button class="btn-finish" onclick="tryFinish()">Finalizar y Calificar ✔</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════ RESULTS ════════════════ -->
+<section id="results" class="screen">
+  <div class="res-header">
+    <h1>Resultados del Simulacro</h1>
+    <h2>Matemáticas 11° — Cuadernillo 1 de 2022</h2>
+    <div class="score-wrap">
+      <div class="score-ring" id="score-ring">
+        <span class="num" id="score-num">—</span>
+        <span class="denom">/ 100</span>
+      </div>
+      <p class="score-msg" id="score-msg"></p>
+    </div>
+  </div>
+
+  <div class="res-body">
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-box"><div class="n g" id="s-ok">0</div><div class="lbl">Correctas</div></div>
+      <div class="stat-box"><div class="n r" id="s-err">0</div><div class="lbl">Incorrectas</div></div>
+      <div class="stat-box"><div class="n y" id="s-skip">0</div><div class="lbl">Sin responder</div></div>
+      <div class="stat-box"><div class="n"  id="s-time">—</div><div class="lbl">Tiempo usado</div></div>
+    </div>
+
+    <!-- Topic feedback -->
+    <p class="section-title">📊 Retroalimentación por tema</p>
+    <div class="topics-grid" id="topics-grid"></div>
+
+    <!-- Per-question detail -->
+    <p class="section-title">🔍 Detalle por pregunta</p>
+    <div class="detail-grid" id="detail-grid"></div>
+
+    <button class="btn-retry" onclick="resetToLanding()">🔄 Intentar de nuevo</button>
+  </div>
+</section>
+
+
+<!-- ════════════════ SCRIPT ════════════════ -->
+<script>
+/* ── ANSWER KEY ── */
+const KEY = {
+  1:'D', 2:'B', 3:'A', 4:'A', 5:'C',
+  6:'D', 7:'C', 8:'B', 9:'C', 10:'B',
+  11:'C', 12:'C', 13:'B', 14:'A', 15:'D',
+  16:'B', 17:'B', 18:'B', 19:'C', 20:'C'
+};
+
+/* ── TOPIC METADATA ── */
+const TOPICS = [
+  {
+    id: 'algebra',
+    name: 'Álgebra y Cálculo',
+    color: '#1a3a6b',
+    questions: [2, 3, 6, 7, 9, 10, 11, 12, 13, 14, 16, 17],
+    subtopics: {
+      2:  'Funciones cuadráticas — gráfica desde ecuación',
+      3:  'Funciones cuadráticas — traslaciones verticales',
+      6:  'Funciones exponenciales — tabla de valores',
+      7:  'Dominio de funciones radicales',
+      9:  'Parábolas — condiciones para determinar su ecuación',
+      10: 'Expresiones con radicales — propiedades',
+      11: 'Ordenar números decimales',
+      12: 'Funciones lineales — propiedades desde gráfica',
+      13: 'Proporcionalidad directa e inversa',
+      14: 'Función lineal desde tabla de datos',
+      16: 'Ecuación lineal en contexto (punto de equilibrio)',
+      17: 'Operaciones con enteros en recta numérica'
+    },
+    tip: 'Refuerza identificación de gráficas de funciones y su correspondencia algebraica.'
+  },
+  {
+    id: 'estadistica',
+    name: 'Estadística y Probabilidad',
+    color: '#8e44ad',
+    questions: [1, 4, 8, 15],
+    subtopics: {
+      1:  'Consolidar datos de gráficas circular y de barras',
+      4:  'Reconocer inconsistencias en tablas de datos',
+      8:  'Probabilidad de eventos con dados',
+      15: 'Conteo — principio multiplicativo (permutaciones)'
+    },
+    tip: 'Practica lectura e interpretación de distintos tipos de gráficas y conteo básico.'
+  },
+  {
+    id: 'geometria',
+    name: 'Geometría',
+    color: '#16a085',
+    questions: [5, 18, 19, 20],
+    subtopics: {
+      5:  'Área de figuras compuestas',
+      18: 'Paralelismo justificado por ángulos rectos',
+      19: 'Cónicas — elipse y circunferencia',
+      20: 'Transformaciones geométricas — orientación'
+    },
+    tip: 'Practica cálculo de áreas, propiedades de ángulos y transformaciones geométricas.'
+  }
+];
+
+const TOTAL      = 20;
+const SECS_TOTAL = 60 * 60;
+
+/* ── STATE ── */
+let answers  = {};
+let secsLeft = SECS_TOTAL;
+let startTs  = null;
+let interval = null;
+let done     = false;
+
+/* ── SCREEN ── */
+function show(id) {
+  ['landing','exam','results'].forEach(s => {
+    const el = document.getElementById(s);
+    el.classList.remove('active');
+    el.style.display = 'none';
+  });
+  const el = document.getElementById(id);
+  el.style.display = '';
+  el.classList.add('active');
+}
+
+/* ── INIT ── */
+function initExam() {
+  answers  = {};
+  secsLeft = SECS_TOTAL;
+  done     = false;
+  startTs  = Date.now();
+  buildAnswerSheet();
+  buildNavGrid();
+  updateProgress();
+  updateTimer();
+  clearInterval(interval);
+  interval = setInterval(() => {
+    secsLeft--;
+    updateTimer();
+    if (secsLeft <= 0) autoFinish();
+  }, 1000);
+  show('exam');
+}
+
+/* ── BUILD SHEET ── */
+function buildAnswerSheet() {
+  const list = document.getElementById('ans-list');
+  list.innerHTML = '';
+  for (let q = 1; q <= TOTAL; q++) {
+    list.insertAdjacentHTML('beforeend', `
+      <div class="q-row" id="qrow-${q}">
+        <div class="q-label">
+          <span>Pregunta ${q}</span>
+          <span id="qchk-${q}"></span>
+        </div>
+        <div class="opts">
+          ${['A','B','C','D'].map(o =>
+            `<button class="opt" id="opt-${q}-${o}" onclick="pick(${q},'${o}')">${o}</button>`
+          ).join('')}
+        </div>
+      </div>`);
+  }
+}
+
+function buildNavGrid() {
+  const g = document.getElementById('nav-grid');
+  g.innerHTML = '';
+  for (let q = 1; q <= TOTAL; q++) {
+    g.insertAdjacentHTML('beforeend',
+      `<button class="nav-btn" id="nav-${q}" onclick="scrollToQ(${q})">${q}</button>`);
+  }
+}
+
+/* ── PICK ── */
+function pick(q, opt) {
+  if (done) return;
+  ['A','B','C','D'].forEach(o => document.getElementById(`opt-${q}-${o}`).classList.remove('sel'));
+  document.getElementById(`opt-${q}-${opt}`).classList.add('sel');
+  answers[q] = opt;
+  document.getElementById(`qrow-${q}`).classList.add('done');
+  document.getElementById(`qchk-${q}`).textContent = '✔';
+  document.getElementById(`nav-${q}`).classList.add('done');
+  updateProgress();
+}
+
+function scrollToQ(q) {
+  document.getElementById(`qrow-${q}`)?.scrollIntoView({ behavior:'smooth', block:'center' });
+}
+
+/* ── PROGRESS ── */
+function updateProgress() {
+  const n = Object.keys(answers).length;
+  document.getElementById('bar-count').textContent = `${n} / ${TOTAL}`;
+  document.getElementById('ans-label').textContent = `${n} de ${TOTAL} respondidas`;
+  document.getElementById('progress-bar-fill').style.width = `${(n/TOTAL)*100}%`;
+}
+
+/* ── TIMER ── */
+function updateTimer() {
+  const m = Math.floor(secsLeft / 60);
+  const s = secsLeft % 60;
+  const el = document.getElementById('timer');
+  el.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  el.className = secsLeft <= 60 ? 'danger' : secsLeft <= 300 ? 'warn' : '';
+}
+
+/* ── FINISH ── */
+function tryFinish() {
+  const missing = TOTAL - Object.keys(answers).length;
+  const msg = missing > 0
+    ? `Tienes ${missing} pregunta(s) sin responder.\n¿Deseas finalizar de todas formas?`
+    : '¿Deseas finalizar y ver tus resultados?';
+  if (confirm(msg)) finish();
+}
+
+function autoFinish() {
+  clearInterval(interval);
+  done = true;
+  alert('⏰ ¡El tiempo ha terminado! Se mostrarán tus resultados.');
+  showResults();
+}
+
+function finish() {
+  clearInterval(interval);
+  done = true;
+  showResults();
+}
+
+/* ── RESULTS ── */
+function showResults() {
+  const elapsed = SECS_TOTAL - secsLeft;
+  const em = Math.floor(elapsed / 60), es = elapsed % 60;
+
+  let ok = 0, err = 0, skip = 0;
+  for (let q = 1; q <= TOTAL; q++) {
+    const a = answers[q];
+    if (!a) skip++; else if (a === KEY[q]) ok++; else err++;
+  }
+  const score = Math.round((ok / TOTAL) * 100);
+
+  /* Score ring */
+  document.getElementById('score-num').textContent = score;
+  const ring = document.getElementById('score-ring');
+  const ringColor = score >= 70 ? '#27ae60' : score >= 50 ? '#f39c12' : '#e74c3c';
+  ring.style.borderColor = ringColor;
+  ring.style.color       = ringColor;
+
+  /* Message */
+  const msgMap = [
+    [90, '¡Excelente resultado! Dominas muy bien los temas. 🏆'],
+    [70, '¡Buen trabajo! Sigue repasando los temas con más dificultad. 👍'],
+    [50, 'Resultado regular. Revisa las preguntas incorrectas con calma. 📚'],
+    [0,  'Necesitas reforzar los temas evaluados. ¡No te rindas, sigue practicando! 💪']
+  ];
+  document.getElementById('score-msg').textContent =
+    msgMap.find(([min]) => score >= min)[1];
+
+  /* Stats */
+  document.getElementById('s-ok').textContent   = ok;
+  document.getElementById('s-err').textContent  = err;
+  document.getElementById('s-skip').textContent = skip;
+  document.getElementById('s-time').textContent =
+    `${String(em).padStart(2,'0')}:${String(es).padStart(2,'0')}`;
+
+  /* ── TOPIC FEEDBACK ── */
+  const topicsGrid = document.getElementById('topics-grid');
+  topicsGrid.innerHTML = '';
+
+  TOPICS.forEach(topic => {
+    const qs = topic.questions;
+    let tOk = 0, tErr = 0, tSkip = 0;
+    qs.forEach(q => {
+      const a = answers[q];
+      if (!a) tSkip++; else if (a === KEY[q]) tOk++; else tErr++;
+    });
+    const answered = tOk + tErr;
+    const pct = answered > 0 ? Math.round((tOk / qs.length) * 100) : null;
+
+    let level, badgeClass, fillClass, emoji;
+    if (pct === null)    { level = 'Sin datos'; badgeClass = 'badge-none'; fillClass = 'fill-none'; emoji = '⬜'; }
+    else if (pct >= 75)  { level = 'Dominado';  badgeClass = 'badge-great'; fillClass = 'fill-great'; emoji = '✅'; }
+    else if (pct >= 50)  { level = 'Aceptable'; badgeClass = 'badge-good';  fillClass = 'fill-good';  emoji = '🟡'; }
+    else                 { level = 'A reforzar'; badgeClass = 'badge-needs'; fillClass = 'fill-needs'; emoji = '🔴'; }
+
+    const cardClass = pct === null ? 'none' : pct >= 75 ? 'great' : pct >= 50 ? 'good' : 'needs';
+    const barWidth  = pct !== null ? pct : 0;
+
+    // Build subtopic list
+    const subList = qs.map(q => {
+      const a   = answers[q];
+      const isOk   = a && a === KEY[q];
+      const isSkip = !a;
+      const ic = isOk ? '✅' : isSkip ? '⬜' : '❌';
+      return `<div style="display:flex;gap:6px;align-items:flex-start;margin:2px 0">
+        <span>${ic}</span>
+        <span><b>P${q}:</b> ${topic.subtopics[q]}</span>
+      </div>`;
+    }).join('');
+
+    topicsGrid.insertAdjacentHTML('beforeend', `
+      <div class="topic-card ${cardClass}">
+        <div class="topic-header">
+          <span class="topic-name">${emoji} ${topic.name}</span>
+          <span class="topic-badge ${badgeClass}">${level}</span>
+        </div>
+        <div class="topic-pcts">
+          <span>${tOk} correcta${tOk !== 1 ? 's' : ''} de ${qs.length}</span>
+          <span>${pct !== null ? pct + '%' : '—'}</span>
+        </div>
+        <div class="topic-bar-wrap">
+          <div class="topic-bar-fill ${fillClass}" style="width:${barWidth}%"></div>
+        </div>
+        <div class="topic-detail">
+          <div class="topic-qs">${subList}</div>
+          ${cardClass !== 'great' ? `<div class="topic-tip">💡 ${topic.tip}</div>` : ''}
+        </div>
+      </div>`);
+  });
+
+  /* ── DETAIL GRID ── */
+  const grid = document.getElementById('detail-grid');
+  grid.innerHTML = '';
+
+  // Find topic name for each question
+  const qTopic = {};
+  TOPICS.forEach(t => t.questions.forEach(q => qTopic[q] = t.name));
+
+  for (let q = 1; q <= TOTAL; q++) {
+    const a   = answers[q];
+    const k   = KEY[q];
+    const isOk   = a && a === k;
+    const isSkip = !a;
+    const cls  = isOk ? 'ok' : isSkip ? 'skip' : 'err';
+    const icon = isOk ? '✅' : isSkip ? '⬜' : '❌';
+
+    let ansHtml;
+    if (isSkip)      ansHtml = `<span style="color:#999">Sin responder</span> &nbsp;·&nbsp; Correcta: <span class="c-ans">${k}</span>`;
+    else if (isOk)   ansHtml = `Tu respuesta: <span class="c-ans">${a}</span> ✓`;
+    else             ansHtml = `Tu respuesta: <span class="w-ans">${a}</span> &nbsp;·&nbsp; Correcta: <span class="c-ans">${k}</span>`;
+
+    grid.insertAdjacentHTML('beforeend', `
+      <div class="det-card ${cls}">
+        <div style="flex:1">
+          <div class="det-q">Pregunta ${q}</div>
+          <div class="det-sub">${qTopic[q] || ''}</div>
+          <div class="det-ans">${ansHtml}</div>
+        </div>
+        <span class="det-icon">${icon}</span>
+      </div>`);
+  }
+
+  show('results');
+}
+
+/* ── RESET ── */
+function resetToLanding() {
+  clearInterval(interval);
+  done = false;
+  show('landing');
+}
+</script>
+</body>
+</html>
